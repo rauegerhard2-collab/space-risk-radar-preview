@@ -53,11 +53,37 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 .health-state.ok{background:var(--green)}.health-state.fail{background:var(--red)}.health-state.stale{background:var(--amber)}
 .health-foot{margin:10px 0 0}
 @media(max-width:700px){.health-grid{grid-template-columns:1fr}.health-head{align-items:flex-start;flex-direction:column}}
+
+/* v1.3 evidence visualisations */
+.evidence-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
+.evidence-card{padding:16px;background:#0b1524;border:1px solid #263951;border-radius:10px;min-width:0}
+.evidence-card h3{font-size:13px;margin:0 0 5px}
+.evidence-card .evidence-sub{font-size:10px;color:var(--muted);margin:0 0 14px}
+.population-row{display:grid;grid-template-columns:145px 1fr 92px;gap:10px;align-items:center;margin:13px 0}
+.population-row label{font-size:10px;color:#c8d7e9}
+.population-track{height:13px;background:#1a2a40;border-radius:20px;overflow:hidden}
+.population-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#53d7ee,#f02b91);min-width:2px}
+.population-row strong{font-size:10px;text-align:right}
+.scale-note{font-size:9px;color:var(--muted);margin-top:12px}
+.fragmentation-number{font-size:42px;line-height:1.1;font-weight:850;color:var(--amber);margin:12px 0 3px}
+.fragmentation-label{font-size:11px;color:#dce8f7}
+.evidence-callout{margin-top:12px;padding:10px;border:1px solid #71542e;background:#2c2419;border-radius:8px;color:#f3d9ad;font-size:10px}
+.event-bars{display:grid;gap:12px;margin-top:15px}
+.event-row{display:grid;grid-template-columns:120px 1fr 32px;gap:9px;align-items:center}
+.event-row span{font-size:10px;color:#c8d7e9}
+.event-track{height:12px;background:#1a2a40;border-radius:20px;overflow:hidden}
+.event-fill{height:100%;background:var(--cyan);border-radius:20px}
+.event-row b{font-size:10px;text-align:right}
+.collision-status{margin-top:13px;padding:12px;border:1px solid #654a32;background:#2a211a;border-radius:8px}
+.collision-status strong{display:block;color:var(--amber);font-size:12px}
+.collision-status p{font-size:10px;color:#e4d2b8;margin:5px 0 0}
+@media(max-width:800px){.evidence-grid{grid-template-columns:1fr}.population-row{grid-template-columns:115px 1fr 82px}.event-row{grid-template-columns:100px 1fr 28px}}
+
 </style>
 </head>
 <body>
 <div class="shell">
-<header class="topbar"><div class="brand"><span class="brandmark"></span> OPEN ORBITAL INTELLIGENCE</div><div class="topmeta">Independent public information project · v1.2 interactive preview</div></header>
+<header class="topbar"><div class="brand"><span class="brandmark"></span> OPEN ORBITAL INTELLIGENCE</div><div class="topmeta">Independent public information project · v1.3 interactive preview</div></header>
 <section class="hero" id="overview">
 <div><div class="eyebrow">Space environment · global perspective</div><h1>SPACE RISK <span>RADAR</span></h1><p>Ein transparentes Lagebild zur orbitalen Umwelt: katalogisierte Objekte, modellierte Trümmerpopulationen, Fragmentierungsereignisse und die Grenzen öffentlich verfügbarer Kollisionsdaten.</p></div>
 <div class="hero-side"><div class="status"><i class="dot"></i> Datenstand ESA: 02. November 2026</div><strong>Beobachten. Einordnen. Verstehen.</strong><small>Öffentlich belegte Daten · Quellen transparent · Unsicherheiten sichtbar</small></div>
@@ -96,10 +122,48 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <div class="metricline" role="button" tabindex="0" aria-haspopup="dialog" data-title="Wachstum des katalogisierten Bestands" data-detail="Ein steigender Katalogbestand kann reale Zunahme, verbesserte Sensorik, bessere Auswertung und neu identifizierte Objekte widerspiegeln. Er ist deshalb nicht ohne Weiteres eine reine Wachstumsrate der physischen Population."><span>Wachstum des katalogisierten Bestands</span><b>Mehr Objekte erfasst</b></div><div class="metricline" role="button" tabindex="0" aria-haspopup="dialog" data-title="Modellierte Kleinsttrümmer" data-detail="Kleine Fragmente sind nicht vollständig einzeln katalogisierbar. Populationsmodelle schätzen ihre Anzahl statistisch; Ergebnis und Unsicherheit hängen von Modell, Größenklasse und Referenzdatum ab."><span>Modellierte Kleinsttrümmer</span><b>Statistische Schätzung</b></div><div class="metricline" role="button" tabindex="0" aria-haspopup="dialog" data-title="Konkrete Dienstunterbrechung" data-detail="Aus globalen Trümmerzahlen allein lässt sich kein Ausfall eines Telekommunikationsdienstes ableiten. Dafür wären konkrete Satelliten, Orbits, Abhängigkeiten, Bodeninfrastruktur und alternative Dienstpfade zu untersuchen."><span>Konkrete Dienstunterbrechung</span><b>Nicht daraus ableitbar</b></div><div class="metricline" role="button" tabindex="0" aria-haspopup="dialog" data-title="Globale Manöveraktivität" data-detail="Es gibt keine vollständige, einheitliche öffentliche Datenbasis aller Kollisionswarnungen und ausgeführten Ausweichmanöver. Fehlende Daten dürfen nicht als Nullereignisse interpretiert werden."><span>Globale Manöveraktivität</span><b>Öffentlich unvollständig</b></div>
 <p class="sub" style="margin-top:12px">Für Kommunikations- und andere kritische Dienste sind zusätzlich konkrete Satelliten, genutzte Orbits, Anbieter, Bodenstationen und alternative Dienstpfade zuzuordnen. Globale Trümmerzahlen allein belegen keinen konkreten Ausfall.</p></section>
 </div>
-<section class="panel" style="margin-top:14px"><div class="panel-head"><div><div class="section-kicker">05 / Timeline</div><h2>Jüngste belastbare Berichtslage</h2><div class="sub">Berichtsbezug und Stichtage bewusst getrennt</div></div></div>
+
+<section class="panel" id="visual-evidence" style="margin-top:14px">
+ <div class="panel-head"><div><div class="section-kicker">05 / Data made visible</div><h2>Was die Daten tatsächlich zeigen</h2><div class="sub">Vergleichbare Größenordnungen, dokumentierte Ereignisse und klar markierte Datenlücken</div></div></div>
+ <div class="evidence-grid">
+  <article class="evidence-card">
+   <h3>Objektpopulation nach Größenklasse</h3>
+   <p class="evidence-sub">Logarithmischer Größenvergleich · ESA / MASTER-8 · unterschiedliche Datenarten</p>
+   <div class="population-row"><label>Katalogisiert</label><div class="population-track"><div class="population-fill" style="width:54.9%"></div></div><strong>47.280</strong></div>
+   <div class="population-row"><label>Modelliert &gt; 10 cm</label><div class="population-track"><div class="population-fill" style="width:57.3%"></div></div><strong>68.450</strong></div>
+   <div class="population-row"><label>Trümmer 1–10 cm</label><div class="population-track"><div class="population-fill" style="width:72.7%"></div></div><strong>≈ 1,5 Mio.</strong></div>
+   <div class="population-row"><label>Trümmer 1 mm–1 cm</label><div class="population-track"><div class="population-fill" style="width:100%"></div></div><strong>≈ 230 Mio.</strong></div>
+   <p class="scale-note">Balkenlänge logarithmisch skaliert, damit Größenordnungen vergleichbar bleiben. Katalogwerte sind keine Modellschätzungen; MASTER-8-Werte sind statistische Populationen, keine Einzelobjektzählungen. Referenz: ESA / MASTER-8, 02/2026 bzw. Portalstand 02.11.2026.</p>
+  </article>
+  <article class="evidence-card">
+   <h3>Fragmentierungsereignisse</h3>
+   <p class="evidence-sub">Kumulierte ESA-Kennzahl · keine Jahresrate</p>
+   <div class="fragmentation-number">&gt; 660</div>
+   <div class="fragmentation-label">Break-ups, Explosionen, Kollisionen oder andere Anomalien mit Fragmentierung</div>
+   <div class="evidence-callout">Wichtig: Diese Zahl bezeichnet nicht 660 Kollisionen. Sie fasst verschiedene Ursachen zusammen und ist kumuliert. Eine belastbare jährliche Kollisionsrate lässt sich daraus nicht berechnen.</div>
+   <div class="collision-status"><strong>Globale öffentliche Kollisionswarnungen: keine belastbare Gesamtzahl</strong><p>Öffentliche CDM-/Conjunction-Daten decken nur Teilmengen ab. Ohne vollständige Abdeckung, einheitliche IDs und Zeitfenster wäre eine Summenzahl irreführend. <a href="https://orbitalwatch.app/collision-watch" target="_blank" rel="noopener">Öffentliche Collision Watch ansehen ↗</a></p></div>
+  </article>
+  <article class="evidence-card">
+   <h3>Jüngste Katalogänderungen</h3>
+   <p class="evidence-sub">OrbitalWiki · aktuellste 100 Änderungsdatensätze des Abrufs vom 03.11.2026</p>
+   <div id="event-summary"><p class="evidence-sub">Ereignisdaten werden geladen …</p></div>
+   <p class="scale-note">Diese Grafik zeigt Katalogänderungen (z. B. neu katalogisierte Objekte oder Orbitänderungen), keine Kollisionswarnungen, keine Fragmentierungsereignisse und keine vollständige Historie. Die API stellt nur die jüngsten Einträge des Änderungslogs bereit.</p>
+  </article>
+  <article class="evidence-card">
+   <h3>Was noch nicht seriös visualisierbar ist</h3>
+   <div class="metricline"><span>Globale Orbitverteilung nach LEO / MEO / GEO</span><b>Datensatz fehlt</b></div>
+   <div class="metricline"><span>CDM-Warnungen als globale Zeitreihe</span><b>Teilabdeckung</b></div>
+   <div class="metricline"><span>Bestätigte Ausweichmanöver weltweit</span><b>Nicht vollständig öffentlich</b></div>
+   <div class="metricline"><span>Konkrete Telekom-Dienstabhängigkeiten</span><b>Einzelfallanalyse nötig</b></div>
+   <p class="scale-note">Diese Datenlücken sind bewusst sichtbar. Die vorhandenen 20 STATIONS-Bahnelemente sind eine begrenzte Stichprobe und keine Grundlage für eine globale Orbit- oder Kollisionsstatistik.</p>
+  </article>
+ </div>
+</section>
+
+<section class="panel" style="margin-top:14px"><div class="panel-head"><div><div class="section-kicker">06 / Timeline</div><h2>Jüngste belastbare Berichtslage</h2><div class="sub">Berichtsbezug und Stichtage bewusst getrennt</div></div></div>
 <div class="timeline"><article class="timeitem" role="button" tabindex="0" aria-haspopup="dialog" data-title="ESA-Bericht 2024 · Berichtsbezug 2023" data-detail="Der Zeitstempel bezeichnet den Berichtsbezug. Rund 35.000 katalogisierte Objekte sind ein historischer, gerundeter Snapshot; Katalogzahlen hängen auch von Erfassungs- und Überwachungsleistung ab."><time>2024 · ESA REPORT</time><h3>Berichtsbezug 2023</h3><p>Rund 35.000 katalogisierte Objekte in der damaligen Berichtseinordnung. Der Katalogbestand hängt auch von Überwachungs- und Erfassungsleistung ab.</p></article><article class="timeitem" role="button" tabindex="0" aria-haspopup="dialog" data-title="ESA-Bericht 2025 · Daten bis Ende 2024" data-detail="Der Bericht fasst Daten bis Ende 2024 zusammen. Werte aus verschiedenen Ausgaben nur vergleichen, wenn Definition, Objektklasse und Stichtag zusammenpassen."><time>2025 · ESA REPORT</time><h3>Daten bis Ende 2024</h3><p>Mehrere Fragmentierungsereignisse und weiter zunehmender katalogisierter Bestand; Vergleich nur mit passenden Definitionen und Stichtagen.</p></article><article class="timeitem" role="button" tabindex="0" aria-haspopup="dialog" data-title="ESA-Bericht 2026 · Aktivitäten im Jahr 2025" data-detail="Die im Dashboard referenzierte ESA-Berichtslage beschreibt Aktivitäten im Jahr 2025 und Daten bis Ende 2025. Berichtsdatum und Datenstichtag sind unterschiedliche Zeitangaben."><time>14 SEP 2026 · ESA REPORT</time><h3>Aktivitäten im Jahr 2025</h3><p>Mehr als 300 Starts und über 4.000 neue Nutzlasten; Berichtsdaten bis Ende 2025.</p></article></div>
 </section>
-<section class="panel" id="sources" style="margin-top:14px"><div class="panel-head"><div><div class="section-kicker">06 / Sources & data quality</div><h2>Quellenregister & Datenregeln</h2><div class="sub">Primärquellen zuerst · Modellwerte und Beobachtungen getrennt</div></div></div>
+<section class="panel" id="sources" style="margin-top:14px"><div class="panel-head"><div><div class="section-kicker">07 / Sources & data quality</div><h2>Quellenregister & Datenregeln</h2><div class="sub">Primärquellen zuerst · Modellwerte und Beobachtungen getrennt</div></div></div>
 <div class="sources">
 <div class="source"><a href="https://sdup.esoc.esa.int/discosweb/statistics/" target="_blank" rel="noopener">ESA Space Debris User Portal ↗</a><p>Aktuelle Stichtagszahlen, Katalogbestand, Fragmentierungen und MASTER-8-Modellpopulationen. Portalstand: 02.11.2026.</p></div>
 <div class="source"><a href="https://www.esa.int/Space_Safety/Space_Debris/ESA_Space_Environment_Report_2026" target="_blank" rel="noopener">ESA Space Environment Report 2026 ↗</a><p>Jährlicher Bericht mit Daten bis Ende 2025, Trends und langfristigen Szenarien.</p></div>
@@ -114,7 +178,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <div style="height:15px"></div><div class="quality"><div><b><span class="badge">OBSERVED / CATALOGUED</span></b><span>Beobachtet oder in einem Überwachungskatalog geführt. Stichtag und Quelle nennen.</span></div><div><b><span class="badge amber">MODELLED</span></b><span>Statistische Populationsschätzung. Modell, Größenbereich und Referenzdatum nennen.</span></div><div><b><span class="badge pink">DERIVED</span></b><span>Aus anderen Werten abgeleitet. Formel, Eingaben und Unsicherheit offenlegen.</span></div></div>
 <p class="sub" style="margin:14px 0 0">Qualitätsregeln: keine Interpolation fehlender Monate · Warnung, Risikoprüfung und Manöver getrennt halten · Ereignisse deduplizieren · Quellen- und Aktualisierungsdatum pro Datenpunkt dokumentieren · Unsicherheiten sichtbar kennzeichnen.</p>
 </section>
-<footer><span>SPACE RISK RADAR · Public information prototype · Interactive preview v1.2</span><span>Stand: 03.11.2026 · Unabhängiges Projekt · Keine offizielle ESA- oder DTAG-Veröffentlichung</span></footer>
+<footer><span>SPACE RISK RADAR · Public information prototype · Interactive preview v1.3</span><span>Stand: 03.11.2026 · Unabhängiges Projekt · Keine offizielle ESA- oder DTAG-Veröffentlichung</span></footer>
 </div>
 <dialog id="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title">Detail</h2><button class="dialog-close" type="button" id="dialog-close" aria-label="Detailansicht schließen">Schließen ✕</button></div><div class="dialog-body" id="dialog-body"></div></dialog>
 <script>
@@ -213,6 +277,35 @@ for(let i=0;i<=4;i++){const val=d.max*i/4,y=T+ih-ih*i/4;svg.append(node("line",{
 d.points.forEach((p)=>{const x=L+(p.year-2023)*iw/3,y=T+ih-p.value/d.max*ih;const circle=node("circle",{cx:x,cy:y,r:7,fill:"#f02b91",stroke:"#fff","stroke-width":1.5,class:"chart-point",tabindex:0,role:"button","aria-label":p.label+": "+p.detail});circle.addEventListener("click",()=>openDetail(p.label,p.detail,d.note));circle.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(p.label,p.detail,d.note)}});svg.append(circle);const label=key==="medium"?(p.value/1e6).toFixed(1)+" Mio.":Math.round(p.value).toLocaleString("de-DE");svg.append(node("text",{x,y:y-14,fill:"#f2f6ff","font-size":11,"font-weight":700,"text-anchor":"middle"},label));});
 document.getElementById("chart-note").textContent=d.note}
 document.querySelectorAll("#chart-controls button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("#chart-controls button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");render(btn.dataset.key)}));render("tracked");
+
+async function loadEventSummary(){
+ const host=document.getElementById("event-summary");
+ try{
+  const response=await fetch("data/orbital/orbitalwiki-events/latest.json?ts="+Date.now(),{cache:"no-store"});
+  if(!response.ok)throw new Error("Ereignisfeed HTTP "+response.status);
+  const envelope=await response.json(),data=envelope.payload?.data;
+  if(!Array.isArray(data)||!data.length)throw new Error("Keine Ereignisdatensätze vorhanden");
+  const counts={};
+  for(const item of data){const key=item.type||"other";counts[key]=(counts[key]||0)+1}
+  const labels={object_added:"Neu katalogisiert",orbit_changed:"Orbit geändert",reentry:"Wiedereintritt",other:"Sonstige"};
+  const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const max=Math.max(...rows.map(x=>x[1]),1);
+  const wrap=document.createElement("div");wrap.className="event-bars";
+  for(const [key,value] of rows){
+   const row=document.createElement("div");row.className="event-row";
+   const label=document.createElement("span");label.textContent=labels[key]||key.replaceAll("_"," ");
+   const track=document.createElement("div");track.className="event-track";
+   const fill=document.createElement("div");fill.className="event-fill";fill.style.width=(value/max*100)+"%";track.append(fill);
+   const number=document.createElement("b");number.textContent=String(value);
+   row.append(label,track,number);wrap.append(row);
+  }
+  const total=document.createElement("p");total.className="scale-note";
+  total.textContent=data.length+" Einträge im gelieferten Ausschnitt · "+(envelope.retrieved_at||"Abrufzeit nicht ausgewiesen")+" · keine vollständige Historie.";
+  host.replaceChildren(wrap,total);
+ }catch(error){const p=document.createElement("p");p.className="evidence-sub";p.textContent="Ereignisübersicht derzeit nicht verfügbar: "+String(error.message||error);host.replaceChildren(p)}
+}
+loadEventSummary();
+
 </script>
 
 
