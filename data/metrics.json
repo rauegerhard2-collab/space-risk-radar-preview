@@ -1,0 +1,94 @@
+{
+  "dataset_id": "esa-space-environment-snapshot-2026-11-02",
+  "dataset_title": "ESA public space-environment indicators",
+  "retrieved_at": "2026-11-03",
+  "source": {
+    "name": "ESA Space Debris User Portal",
+    "url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+    "portal_last_update": "2026-11-02"
+  },
+  "metrics": [
+    {
+      "id": "catalogued_objects_headline",
+      "label": "Catalogued space objects",
+      "value": 47280,
+      "unit": "objects",
+      "classification": "OBSERVED / CATALOGUED",
+      "reference_date": "2026-11-02",
+      "definition": "Approximate number of objects regularly tracked by space surveillance networks and maintained in their catalogue.",
+      "uncertainty_note": "ESA headline summary says about 47,280. The detailed object-by-orbit table on the same page totals 47,290; discrepancy retained and not silently reconciled.",
+      "source_url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+      "verification_status": "source_checked_discrepancy_open"
+    },
+    {
+      "id": "catalogued_objects_detailed_table",
+      "label": "Detailed catalogue table total",
+      "value": 47290,
+      "unit": "objects",
+      "classification": "OBSERVED / CATALOGUED",
+      "reference_date": "2026-11-02",
+      "definition": "Sum shown in ESA's detailed table of orbiting objects per object type and orbital regime.",
+      "uncertainty_note": "Differs by 10 from the portal headline summary (47,280). Kept as a separate source-reported figure pending clarification.",
+      "source_url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+      "verification_status": "source_checked_discrepancy_open"
+    },
+    {
+      "id": "modelled_objects_gt_10cm",
+      "label": "Modelled objects larger than 10 cm",
+      "value": 68450,
+      "unit": "objects",
+      "classification": "MODELLED",
+      "model": "MASTER-8",
+      "reference_date": "2026-02",
+      "definition": "Estimated population of space objects greater than 10 cm, including approximately 11,300 active payloads.",
+      "uncertainty_note": "Statistical population estimate, not a catalogue count.",
+      "source_url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+      "verification_status": "source_checked"
+    },
+    {
+      "id": "modelled_debris_1_to_10cm",
+      "label": "Modelled debris greater than 1 cm to 10 cm",
+      "value": 1500000,
+      "unit": "objects",
+      "classification": "MODELLED",
+      "model": "MASTER-8",
+      "reference_date": "2026-02",
+      "definition": "Approximate estimated debris population greater than 1 cm and up to 10 cm.",
+      "uncertainty_note": "Rounded statistical estimate, not an individually tracked inventory.",
+      "source_url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+      "verification_status": "source_checked"
+    },
+    {
+      "id": "modelled_debris_1mm_to_1cm",
+      "label": "Modelled debris greater than 1 mm to 1 cm",
+      "value": 230000000,
+      "unit": "objects",
+      "classification": "MODELLED",
+      "model": "MASTER-8",
+      "reference_date": "2026-02",
+      "definition": "Approximate estimated debris population greater than 1 mm and up to 1 cm.",
+      "uncertainty_note": "Rounded statistical estimate, not an individually tracked inventory.",
+      "source_url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+      "verification_status": "source_checked"
+    },
+    {
+      "id": "fragmentation_events_cumulative",
+      "label": "Fragmentation events",
+      "value": 660,
+      "qualifier": "more_than",
+      "unit": "events",
+      "classification": "REPORTED",
+      "reference_date": "2026-11-02",
+      "definition": "Cumulative ESA headline count of break-ups, explosions, collisions or anomalous events resulting in fragmentation.",
+      "uncertainty_note": "ESA reports more than 660; 660 is a lower-bound display value, not an exact count.",
+      "source_url": "https://sdup.esoc.esa.int/discosweb/statistics/",
+      "verification_status": "source_checked"
+    }
+  ],
+  "methodology": {
+    "no_interpolation": true,
+    "separate_catalogued_and_modelled": true,
+    "preserve_source_discrepancies": true,
+    "separate_warnings_assessments_and_manoeuvres": true
+  }
+}
