@@ -1,0 +1,14 @@
+{
+  "snapshot_date": "2026-11-03",
+  "dataset_id": "esa-space-environment-snapshot-2026-11-02",
+  "source": "https://sdup.esoc.esa.int/discosweb/statistics/",
+  "note": "Initial dated baseline copied from metrics.json. Source reference date remains per metric; this is not a new measurement.",
+  "metrics": [
+    {"id":"catalogued_objects_headline","value":47280,"unit":"objects","classification":"OBSERVED / CATALOGUED","reference_date":"2026-11-02","verification_status":"source_checked_discrepancy_open"},
+    {"id":"catalogued_objects_detailed_table","value":47290,"unit":"objects","classification":"OBSERVED / CATALOGUED","reference_date":"2026-11-02","verification_status":"source_checked_discrepancy_open"},
+    {"id":"modelled_objects_gt_10cm","value":68450,"unit":"objects","classification":"MODELLED","reference_date":"2026-02","verification_status":"source_checked"},
+    {"id":"modelled_debris_1_to_10cm","value":1500000,"unit":"objects","classification":"MODELLED","reference_date":"2026-02","verification_status":"source_checked"},
+    {"id":"modelled_debris_1mm_to_1cm","value":230000000,"unit":"objects","classification":"MODELLED","reference_date":"2026-02","verification_status":"source_checked"},
+    {"id":"fragmentation_events_cumulative","value":660,"qualifier":"more_than","unit":"events","classification":"REPORTED","reference_date":"2026-11-02","verification_status":"source_checked"}
+  ]
+}
