@@ -124,67 +124,13 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
  <div class="panel-head"><div><div class="section-kicker">01 / Orbital environment</div><h2>Die Erde im orbitalen Umfeld</h2><div class="sub">Interaktive, datenbasierte Darstellung der qualitätsgeprüften CelesTrak-Orbitverteilung</div></div><span class="badge amber" id="orbit-data-status-top">Daten werden geprüft …</span></div>
  <div class="orbit-viz" aria-label="Interaktive schematische Darstellung der Orbitklassen">
   <div class="orbit-stage">
-   <svg id="orbit-globe" viewBox="0 0 1000 490" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc">
-<title id="orbit-svg-title">Die Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
-<desc id="orbit-svg-desc">Eine detailreiche, stilisierte Erde mit atmosphärischem Leuchten, Kontinenten, Wolkenstrukturen und räumlichen Umlaufbahnen. Die interaktiven Punkte zeigen die relative Verteilung qualitätsgeprüfter CelesTrak-Datensätze; sie sind keine echten Objektpositionen.</desc>
-<defs>
- <radialGradient id="spaceGlow"><stop offset="0" stop-color="#1a4165" stop-opacity=".5"/><stop offset=".58" stop-color="#0b1a2c" stop-opacity=".22"/><stop offset="1" stop-color="#030812" stop-opacity="0"/></radialGradient>
- <radialGradient id="earthOcean" cx="31%" cy="24%" r="77%"><stop offset="0" stop-color="#80c9ec"/><stop offset=".22" stop-color="#367eaa"/><stop offset=".52" stop-color="#145078"/><stop offset=".78" stop-color="#092b4b"/><stop offset="1" stop-color="#020d1c"/></radialGradient>
- <linearGradient id="earthRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e5fbff"/><stop offset=".28" stop-color="#5cc8ff"/><stop offset=".65" stop-color="#1877bd"/><stop offset="1" stop-color="#061a34"/></linearGradient>
- <linearGradient id="earthShade" x1="0" y1="0" x2="1" y2=".15"><stop offset="0" stop-color="#020914" stop-opacity=".68"/><stop offset=".45" stop-color="#03101e" stop-opacity=".05"/><stop offset="1" stop-color="#010713" stop-opacity=".72"/></linearGradient>
- <linearGradient id="cloudTint" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#b7e7ff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity=".02"/></linearGradient>
- <radialGradient id="atmosphere"><stop offset=".76" stop-color="#49bfff" stop-opacity="0"/><stop offset=".91" stop-color="#51caff" stop-opacity=".10"/><stop offset=".97" stop-color="#8be4ff" stop-opacity=".42"/><stop offset="1" stop-color="#40aaff" stop-opacity="0"/></radialGradient>
- <filter id="earthBloom" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="19"/></filter>
- <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
- <clipPath id="earthClip"><circle cx="500" cy="245" r="139"/></clipPath>
- <pattern id="cityLights" width="24" height="20" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1" fill="#ffc978" opacity=".8"/><circle cx="17" cy="13" r=".7" fill="#ffdca1" opacity=".55"/></pattern>
-</defs>
-<rect width="1000" height="490" fill="url(#spaceGlow)"/>
-<g fill="#d5ecff">
- <circle cx="62" cy="64" r="1.5" opacity=".8"/><circle cx="130" cy="151" r=".9" opacity=".6"/><circle cx="208" cy="54" r="1.1"/><circle cx="290" cy="112" r=".8" opacity=".55"/><circle cx="355" cy="39" r="1.3"/><circle cx="430" cy="88" r=".8"/><circle cx="570" cy="42" r="1.1"/><circle cx="658" cy="91" r=".8"/><circle cx="745" cy="43" r="1.4"/><circle cx="862" cy="100" r="1"/><circle cx="940" cy="53" r="1.4"/><circle cx="72" cy="330" r="1.1"/><circle cx="158" cy="420" r="1.3"/><circle cx="255" cy="380" r=".8"/><circle cx="340" cy="455" r="1.2"/><circle cx="670" cy="432" r="1"/><circle cx="790" cy="375" r="1.3"/><circle cx="900" cy="435" r="1.1"/><circle cx="960" cy="300" r=".8"/>
-</g>
-<g class="orbit-spin" id="orbit-geometry" fill="none" stroke-width="1.5">
- <ellipse cx="500" cy="245" rx="190" ry="76" stroke="#45c8ff" opacity=".85" transform="rotate(-18 500 245)"/>
- <ellipse cx="500" cy="245" rx="270" ry="112" stroke="#ffb45c" opacity=".72" transform="rotate(22 500 245)"/>
- <ellipse cx="500" cy="245" rx="355" ry="151" stroke="#8ee45c" opacity=".62" transform="rotate(-8 500 245)"/>
- <ellipse cx="500" cy="245" rx="425" ry="188" stroke="#bd82ff" opacity=".52" transform="rotate(48 500 245)"/>
- <ellipse cx="500" cy="245" rx="465" ry="206" stroke="#6d9fff" opacity=".25" transform="rotate(-32 500 245)"/>
-</g>
+   <svg id="orbit-globe" viewBox="0 0 1000 490" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
+<title id="orbit-svg-title">Fotorealistische Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
+<desc id="orbit-svg-desc">Fotorealistisches Bildmotiv mit Erde, Atmosphäre und Sternenhimmel. Darüber werden interaktive Stichprobenpunkte aus der qualitätsgeprüften CelesTrak-Orbitverteilung eingeblendet. Die Punkte zeigen Klassenanteile, keine realen Objektpositionen.</desc>
+<image href="assets/earth-space-q75.jpg" x="0" y="0" width="1000" height="490" preserveAspectRatio="xMidYMid slice"/>
 <g id="orbit-points"></g>
-<circle cx="500" cy="245" r="174" fill="#2daeff" opacity=".17" filter="url(#earthBloom)"/>
-<circle cx="500" cy="245" r="158" fill="url(#atmosphere)"/>
-<circle cx="500" cy="245" r="143" fill="#3cbcff" opacity=".32" filter="url(#softGlow)"/>
-<circle cx="500" cy="245" r="140" fill="url(#earthOcean)" stroke="url(#earthRim)" stroke-width="2.6"/>
-<g clip-path="url(#earthClip)">
- <rect x="360" y="105" width="280" height="280" fill="url(#earthOcean)"/>
- <!-- North and South America -->
- <path d="M397 150l18-18 22 5 13 14 24 3 11 15-8 16-18 8-5 21-16 9-8 24-14 9-9-13-4-22-18-12-5-24 12-17-9-18z M462 247l18 9 9 20-4 23-13 20-5 26-13 18-9-16 4-23-8-22 9-20z" fill="#679b83" stroke="#9bc9a7" stroke-opacity=".38" stroke-width="1.2"/>
- <!-- Europe, Africa, Asia -->
- <path d="M494 144l21-13 20 4 10 13 25 2 16 15-7 14-23 4-10 17-19-5-13 13-19-10-16-21 7-18z M518 194l24-7 20 14 11 27-10 26-10 29-18 27-14 31-17-8-5-28-14-25 4-26-11-22 14-22z M551 145l30-13 31 9 21 18 24 6 12 20-16 15-23-5-18 17-23-8-20 10-18-15-17-21z M604 261l18-7 17 13-3 24-17 18-13-13z" fill="#6e9e83" stroke="#a6d2a9" stroke-opacity=".36" stroke-width="1.2"/>
- <!-- Australia and islands -->
- <path d="M602 322l20-8 22 11-5 19-20 10-17-11z M636 243l7 4-2 11-7-3z" fill="#78a78b" opacity=".85"/>
- <!-- Ice caps and terrain -->
- <path d="M380 126q60-35 121-20t130 4l18 17q-83-5-137 8t-112 8z" fill="#d7f3ff" opacity=".3"/>
- <path d="M370 349q68 20 130 5t145 9l-12 31H382z" fill="#c6efff" opacity=".2"/>
- <!-- Subtle land texture and city lights -->
- <path d="M397 150l18-18 22 5 13 14 24 3 11 15-8 16-18 8-5 21-16 9-8 24-14 9-9-13-4-22-18-12-5-24 12-17-9-18z M494 144l21-13 20 4 10 13 25 2 16 15-7 14-23 4-10 17-19-5-13 13-19-10-16-21 7-18z" fill="url(#cityLights)" opacity=".55"/>
- <!-- Cloud bands -->
- <g fill="none" stroke="url(#cloudTint)" stroke-linecap="round">
-  <path d="M365 205q55-42 110-16t106-5q34-13 63 2" stroke-width="8" opacity=".34"/>
-  <path d="M367 278q48-24 86-5t90-8q49-20 96 8" stroke-width="6" opacity=".42"/>
-  <path d="M398 327q42-25 76-12t77-12q32-10 63 5" stroke-width="7" opacity=".3"/>
-  <path d="M420 119q54 21 96 5t83 13" stroke-width="5" opacity=".3"/>
-  <path d="M373 235q28-14 48-5m111 69q35-16 61-4" stroke-width="3" opacity=".6"/>
- </g>
- <rect x="360" y="105" width="280" height="280" fill="url(#earthShade)"/>
- <ellipse cx="500" cy="245" rx="135" ry="139" fill="none" stroke="#d9f6ff" stroke-opacity=".12" stroke-width="2"/>
-</g>
-<circle cx="500" cy="245" r="140" fill="none" stroke="#bdeeff" stroke-opacity=".6" stroke-width="1.2"/>
-<path d="M385 174a139 139 0 0 1 210-38" fill="none" stroke="#e5fbff" stroke-opacity=".65" stroke-width="2.2" filter="url(#softGlow)"/>
-<path d="M378 281a139 139 0 0 0 233 62" fill="none" stroke="#2daeff" stroke-opacity=".5" stroke-width="2"/>
-<g fill="#d9f5ff" opacity=".65"><circle cx="500" cy="105" r="1.2"/><circle cx="638" cy="245" r="1.2"/><circle cx="500" cy="385" r="1.2"/><circle cx="360" cy="245" r="1.2"/></g>
 </svg>
-   <div style="position:absolute;left:13px;top:12px;font-size:10px;color:#c3d7eb;background:#071321bb;padding:6px 8px;border-radius:6px">SCHEMATISCHES ORBITMODELL · NICHT MASSSTÄBLICH</div>
+   <div style="position:absolute;left:13px;top:12px;font-size:10px;color:#c3d7eb;background:#071321bb;padding:6px 8px;border-radius:6px">FOTOREALISTISCHES BILDMOTIV · DATENPUNKTE INTERAKTIV ÜBERLAGERT</div>
    <div style="position:absolute;right:13px;bottom:12px;font-size:10px;color:#9eafc8">Punkte = Stichproben der Klassenverteilung</div>
   </div>
   <aside class="orbit-side">
@@ -455,7 +401,7 @@ function renderInteractiveOrbit(d){
  }
  document.getElementById("orbit-show-all").onclick=()=>defs.forEach(x=>toggleOrbit(x.key,true));
  document.getElementById("orbit-focus-leo").onclick=()=>defs.forEach(x=>toggleOrbit(x.key,x.key==="leo"));
- const geometry=document.getElementById("orbit-geometry");
+ const geometry=document.getElementById("orbit-points");
  document.getElementById("orbit-pause").onclick=e=>{const paused=geometry.classList.toggle("orbit-spin");e.currentTarget.textContent=paused?"Bewegung pausieren":"Bewegung aktivieren";};
  detail.innerHTML="<b>"+fmt(total)+" qualitätsgeprüfte Datensätze</b><br>"+fmt(d.raw_record_count??total)+" Rohdatensätze abgerufen · "+fmt(d.quality?.excluded_future_epoch_count||0)+" zukünftige Epoch-Datensätze ausgeschlossen.<br>Wähle eine Klasse für Details.";
 }\n\nasync function loadOrbitDistribution(){
