@@ -1,0 +1,53 @@
+name: Orbit distribution pilot
+
+on:
+  push:
+    paths:
+      - "scripts/build_orbit_distribution.py"
+      - ".github/workflows/orbit-distribution.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "41 6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: orbit-distribution-pilot
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run offline classification tests
+        run: python scripts/build_orbit_distribution.py --check
+      - name: Compile Python
+        run: python -m py_compile scripts/build_orbit_distribution.py
+
+  update-derived-summary:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Retrieve and summarize CelesTrak ACTIVE group
+        run: python scripts/build_orbit_distribution.py
+      - name: Commit derived summary only when changed
+        run: |
+          git add data/orbit-distribution/latest.json
+          if git diff --cached --quiet; then
+            echo "No summary changes (or retrieval skipped by refresh guard)."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update derived orbit distribution summary"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push

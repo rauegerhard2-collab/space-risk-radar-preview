@@ -88,7 +88,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <div><div class="eyebrow">Space environment · global perspective</div><h1>SPACE RISK <span>RADAR</span></h1><p>Ein transparentes Lagebild zur orbitalen Umwelt: katalogisierte Objekte, modellierte Trümmerpopulationen, Fragmentierungsereignisse und die Grenzen öffentlich verfügbarer Kollisionsdaten.</p></div>
 <div class="hero-side"><div class="status"><i class="dot"></i> Datenstand ESA: 02. November 2026</div><strong>Beobachten. Einordnen. Verstehen.</strong><small>Öffentlich belegte Daten · Quellen transparent · Unsicherheiten sichtbar</small></div>
 </section>
-<nav class="nav"><a href="#overview">Overview</a><a href="#orbital-map">Orbital environment</a><a href="#trends">Trends</a><a href="#watch">Collision watch</a><a href="#context">Einordnung</a><a href="#sources">Quellen & Methodik</a></nav>
+<nav class="nav"><a href="#overview">Overview</a><a href="#orbital-map">Orbital environment</a><a href="#trends">Trends</a><a href="#watch">Collision watch</a><a href="#context">Einordnung</a><a href="#orbit-distribution">Orbitverteilung</a><a href="#sources">Quellen & Methodik</a></nav>
 <div class="notice"><b>Transparenz & Abgrenzung:</b> Dieses unabhängige Informationsprojekt ist kein operatives Kollisionswarnsystem. Die Orbitgrafik ist eine schematische Visualisierung und zeigt keine Live-Positionen. Eine vollständige, global einheitliche öffentliche Monatsreihe aller Kollisionswarnungen und tatsächlich ausgeführten Manöver liegt nicht vor. Fehlende Werte werden nicht erfunden oder interpoliert. Keine Verbindung zur ESA oder Deutschen Telekom AG.</div>
 <section class="kpis" aria-label="Zentrale Kennzahlen – anklickbar für Details">
 <article class="kpi" role="button" tabindex="0" aria-haspopup="dialog" data-title="Katalogisierte Objekte" data-detail="47.280 katalogisierte Objekte laut ESA Space Debris User Portal, Portalstand 02.11.2026. Das ist ein Katalogwert zu einem Stichtag – keine Schätzung sämtlicher existierender Objekte."><div class="kpi-label">Katalogisierte Objekte</div><div class="kpi-value pink">47.280</div><div class="kpi-sub">ESA Space Debris User Portal · 02.11.2026</div><span class="tag">Katalog / Stichtag</span></article>
@@ -123,6 +123,20 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <p class="sub" style="margin-top:12px">Für Kommunikations- und andere kritische Dienste sind zusätzlich konkrete Satelliten, genutzte Orbits, Anbieter, Bodenstationen und alternative Dienstpfade zuzuordnen. Globale Trümmerzahlen allein belegen keinen konkreten Ausfall.</p></section>
 </div>
 
+<section class="panel" id="orbit-distribution" style="margin-top:14px">
+ <div class="panel-head"><div><div class="section-kicker">05 / Derived public data</div><h2>Orbitverteilung der CelesTrak-ACTIVE-Gruppe</h2><div class="sub">Abgeleitete Bahnhöhen-Klassen aus öffentlichen GP/OMM-Elementen · kein vollständiger Objektkatalog</div></div><span class="badge amber" id="orbit-data-status">Daten werden geprüft …</span></div>
+ <div class="kpis" style="grid-template-columns:repeat(3,1fr)" id="orbit-kpis">
+  <article class="kpi"><div class="kpi-label">Datensätze</div><div class="kpi-value cyan" id="orbit-total">—</div><div class="kpi-sub">CelesTrak ACTIVE</div></article>
+  <article class="kpi"><div class="kpi-label">Klassifiziert</div><div class="kpi-value" id="orbit-classified">—</div><div class="kpi-sub">Auswertbare Bahnelemente</div></article>
+  <article class="kpi"><div class="kpi-label">Abrufzeit (UTC)</div><div class="kpi-value" style="font-size:17px" id="orbit-retrieved">—</div><div class="kpi-sub">Zeitpunkt des Datenabrufs</div></article>
+ </div>
+ <div class="evidence-grid" style="margin-top:14px">
+  <article class="evidence-card"><h3>Datensätze nach approximierter Orbitklasse</h3><p class="evidence-sub">Anzahl der Einträge in der gelieferten ACTIVE-Gruppe · keine Kollisionswahrscheinlichkeit</p><div id="orbit-bars"><p class="evidence-sub">Die Datendatei wird geladen …</p></div><p class="scale-note" id="orbit-epoch"></p></article>
+  <article class="evidence-card"><h3>Methodik und Grenzen</h3><p class="evidence-sub">Die Kategorien werden aus mittlerer Bewegung und Exzentrizität abgeleitet.</p><div class="metricline"><span>LEO</span><b>Apogäum &lt; 2.000 km</b></div><div class="metricline"><span>MEO</span><b>Perigäum ≥ 2.000 km</b></div><div class="metricline"><span>GEO-ähnlich</span><b>Grobe Näherung</b></div><div class="metricline"><span>HEO / kreuzende Bahnen</span><b>Exzentrizität / Höhenbereich</b></div><p class="scale-note">Die ACTIVE-Gruppe ist eine vom Anbieter definierte Teilmenge. Kategorien sind breite Näherungen, nicht eine präzise Missionsklassifikation. Die Rohdatensätze werden nicht auf dieser Website gespeichert.</p><p class="scale-note">Quelle: <a href="https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&amp;FORMAT=JSON" target="_blank" rel="noopener">CelesTrak ACTIVE GP/OMM ↗</a> · <a href="https://celestrak.org/usage-policy.php" target="_blank" rel="noopener">Nutzungsregeln ↗</a></p></article>
+ </div>
+ <div class="evidence-callout" style="margin-top:14px"><b>Wichtige Abgrenzung:</b> Diese Verteilung beschreibt nur die Datensätze des CelesTrak-ACTIVE-Feeds zum ausgewiesenen Abrufzeitpunkt. Sie ist weder eine vollständige Statistik aller katalogisierten Objekte oder Trümmer noch eine Kollisionswarnung, eine Manöverstatistik oder ein Beleg für Auswirkungen auf Telekommunikationsdienste.</div>
+</section>
+
 <section class="panel" id="visual-evidence" style="margin-top:14px">
  <div class="panel-head"><div><div class="section-kicker">05 / Data made visible</div><h2>Was die Daten tatsächlich zeigen</h2><div class="sub">Vergleichbare Größenordnungen, dokumentierte Ereignisse und klar markierte Datenlücken</div></div></div>
  <div class="evidence-grid">
@@ -151,7 +165,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
   </article>
   <article class="evidence-card">
    <h3>Was noch nicht seriös visualisierbar ist</h3>
-   <div class="metricline"><span>Globale Orbitverteilung nach LEO / MEO / GEO</span><b>Datensatz fehlt</b></div>
+   <div class="metricline"><span>Orbitverteilung CelesTrak ACTIVE</span><b>Siehe neue Grafik</b></div>
    <div class="metricline"><span>CDM-Warnungen als globale Zeitreihe</span><b>Teilabdeckung</b></div>
    <div class="metricline"><span>Bestätigte Ausweichmanöver weltweit</span><b>Nicht vollständig öffentlich</b></div>
    <div class="metricline"><span>Konkrete Telekom-Dienstabhängigkeiten</span><b>Einzelfallanalyse nötig</b></div>
@@ -306,6 +320,40 @@ async function loadEventSummary(){
 }
 loadEventSummary();
 
+
+async function loadOrbitDistribution(){
+ const status=document.getElementById("orbit-data-status"),bars=document.getElementById("orbit-bars");
+ try{
+  const response=await fetch("data/orbit-distribution/latest.json?ts="+Date.now(),{cache:"no-store"});
+  if(!response.ok)throw new Error("Datensatz noch nicht veröffentlicht (HTTP "+response.status+")");
+  const d=await response.json();
+  const required=["record_count","classified_count","counts","retrieved_at_utc","source_url"];
+  if(required.some(k=>!(k in d))||!d.counts||typeof d.record_count!=="number")throw new Error("Datensatzschema unvollständig");
+  const keys=[["leo","LEO · niedrige Erdumlaufbahn"],["meo","MEO · mittlere Erdumlaufbahn"],["geo_like","GEO-ähnlich"],["heo_or_crossing","HEO / kreuzende Bahnen"],["above_geo","Oberhalb GEO"],["unclassified","Nicht klassifiziert"]];
+  const max=Math.max(...keys.map(([k])=>Number(d.counts[k]||0)),1);
+  bars.replaceChildren();
+  for(const [key,label] of keys){
+   const row=document.createElement("div");row.className="population-row";
+   const l=document.createElement("label");l.textContent=label;
+   const track=document.createElement("div");track.className="population-track";
+   const fill=document.createElement("div");fill.className="population-fill";fill.style.width=(Number(d.counts[key]||0)/max*100)+"%";
+   const n=document.createElement("strong");n.textContent=Number(d.counts[key]||0).toLocaleString("de-DE");
+   track.append(fill);row.append(l,track,n);bars.append(row);
+  }
+  document.getElementById("orbit-total").textContent=d.record_count.toLocaleString("de-DE");
+  document.getElementById("orbit-classified").textContent=d.classified_count.toLocaleString("de-DE");
+  document.getElementById("orbit-retrieved").textContent=new Date(d.retrieved_at_utc).toLocaleString("de-DE",{timeZone:"UTC"});
+  const epochNote="Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abgerufen: "+d.retrieved_at_utc+".";
+  const maxEpoch=d.source_epoch_max_utc?Date.parse(d.source_epoch_max_utc):NaN;
+  const retrieval=Date.parse(d.retrieved_at_utc);
+  document.getElementById("orbit-epoch").textContent=epochNote+((Number.isFinite(maxEpoch)&&Number.isFinite(retrieval)&&maxEpoch>retrieval)?" Hinweis zur Datenqualität: Mindestens ein Bahnelement weist einen Epoch-Zeitstempel nach dem Abrufzeitpunkt auf. Das muss fachlich mit der Quelle geklärt werden; die Verteilung ist daher vorläufig.":"");
+  status.textContent="Datensatz geladen";status.className="badge";
+ }catch(error){
+  status.textContent="Noch nicht verfügbar";status.className="badge amber";
+  const p=document.createElement("p");p.className="evidence-sub";p.textContent=String(error.message||error)+"; es werden keine Zahlen geschätzt oder ersatzweise angezeigt.";bars.replaceChildren(p);
+ }
+}
+loadOrbitDistribution();
 </script>
 
 
