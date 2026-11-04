@@ -217,6 +217,7 @@ def build_summary(records: list[dict], retrieved_at: datetime) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="run local classification tests without network access")
+    parser.add_argument("--force", action="store_true", help="bypass the refresh guard for one reviewed refresh")
     parser.add_argument("--output", default=str(OUT), help="summary JSON output path")
     args = parser.parse_args()
     if args.check:
@@ -225,7 +226,7 @@ def main() -> int:
 
     output = Path(args.output)
     now = datetime.now(timezone.utc)
-    if output.exists():
+    if output.exists() and not args.force:
         try:
             previous = json.loads(output.read_text(encoding="utf-8"))
             last = parse_time(previous.get("retrieved_at_utc"))
