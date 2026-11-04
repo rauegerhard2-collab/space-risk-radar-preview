@@ -79,6 +79,29 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 .collision-status p{font-size:10px;color:#e4d2b8;margin:5px 0 0}
 @media(max-width:800px){.evidence-grid{grid-template-columns:1fr}.population-row{grid-template-columns:115px 1fr 82px}.event-row{grid-template-columns:100px 1fr 28px}}
 
+ 
+/* Interactive orbital environment — data-driven category counts, schematic geometry */
+.orbit-viz{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.75fr);gap:14px;margin-top:16px}
+.orbit-stage{position:relative;min-height:420px;border:1px solid #263c59;border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 52%,#132b45 0,#081321 68%,#050b14 100%)}
+.orbit-stage svg{width:100%;height:100%;min-height:420px;display:block}
+.orbit-side{display:flex;flex-direction:column;gap:10px}
+.orbit-legend{display:grid;gap:7px}
+.orbit-filter{display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:1px solid #ffffff18;background:#0b1524;color:var(--text);padding:9px 10px;border-radius:8px;cursor:pointer;font:inherit}
+.orbit-filter[aria-pressed="false"]{opacity:.42}
+.orbit-filter .swatch{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 9px currentColor}
+.orbit-filter strong{margin-left:auto;font-variant-numeric:tabular-nums}
+.orbit-control-row{display:flex;gap:7px;flex-wrap:wrap}
+.orbit-control-row button{border:1px solid var(--line);background:#101c2d;color:var(--text);padding:8px 10px;border-radius:7px;font:inherit;font-size:11px;cursor:pointer}
+.orbit-control-row button:hover,.orbit-filter:hover{border-color:var(--cyan)}
+.orbit-detail{border:1px solid var(--line);border-radius:9px;padding:12px;background:#0b1524;color:var(--muted);font-size:11px;min-height:75px}
+.orbit-detail b{color:var(--text)}
+.orbit-disclaimer{font-size:10px;line-height:1.5;color:var(--muted);padding:10px;border-left:2px solid var(--amber);background:#ffc46b0b}
+.orbit-stars{opacity:.45}
+.orbit-dot{cursor:pointer;stroke:#07101b;stroke-width:.55;transition:opacity .2s,filter .2s}
+.orbit-dot:hover{stroke:#fff;stroke-width:1.8;filter:drop-shadow(0 0 4px currentColor)}
+.orbit-hidden{display:none}
+@media(max-width:850px){.orbit-viz{grid-template-columns:1fr}.orbit-stage,.orbit-stage svg{min-height:330px}}
+@media(prefers-reduced-motion:no-preference){.orbit-spin{transform-origin:500px 245px;animation:orbitSlowSpin 100s linear infinite}@keyframes orbitSlowSpin{to{transform:rotate(360deg)}}}
 </style>
 </head>
 <body>
@@ -125,6 +148,44 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 
 <section class="panel" id="orbit-distribution" style="margin-top:14px">
  <div class="panel-head"><div><div class="section-kicker">05 / Derived public data</div><h2>Orbitverteilung der CelesTrak-ACTIVE-Gruppe</h2><div class="sub">Abgeleitete Bahnhöhen-Klassen aus öffentlichen GP/OMM-Elementen · kein vollständiger Objektkatalog</div></div><span class="badge amber" id="orbit-data-status">Daten werden geprüft …</span></div>
+ <div class="orbit-viz" aria-label="Interaktive schematische Darstellung der Orbitklassen">
+  <div class="orbit-stage">
+   <svg id="orbit-globe" viewBox="0 0 1000 490" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc">
+    <title id="orbit-svg-title">Schematische Erde mit Orbitklassen</title>
+    <desc id="orbit-svg-desc">Die Punkte visualisieren proportional die Verteilung der CelesTrak-Datensätze je Orbitklasse. Positionen und Bahnen sind schematisch und keine realen Satellitenpositionen.</desc>
+    <defs>
+     <radialGradient id="earthFill" cx="34%" cy="28%" r="72%"><stop offset="0" stop-color="#75bce0"/><stop offset=".42" stop-color="#24628a"/><stop offset=".78" stop-color="#12324f"/><stop offset="1" stop-color="#071522"/></radialGradient>
+     <linearGradient id="earthEdge" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#b6efff"/><stop offset=".5" stop-color="#268bd0"/><stop offset="1" stop-color="#071d37"/></linearGradient>
+     <clipPath id="earthClip"><circle cx="500" cy="245" r="118"/></clipPath>
+     <filter id="earthGlow"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs>
+    <g class="orbit-stars" fill="#a9d7ff"><circle cx="70" cy="70" r="1.5"/><circle cx="160" cy="360" r="1"/><circle cx="255" cy="90" r="1"/><circle cx="830" cy="60" r="1.5"/><circle cx="910" cy="340" r="1"/><circle cx="735" cy="420" r="1.2"/><circle cx="400" cy="35" r="1"/><circle cx="610" cy="455" r="1.2"/></g>
+    <g id="orbit-geometry" fill="none" stroke-width="1.3" opacity=".7">
+     <ellipse cx="500" cy="245" rx="185" ry="78" stroke="#159ee8" transform="rotate(-18 500 245)"/>
+     <ellipse cx="500" cy="245" rx="270" ry="116" stroke="#ff9c36" transform="rotate(22 500 245)"/>
+     <ellipse cx="500" cy="245" rx="350" ry="155" stroke="#79df39" transform="rotate(-8 500 245)"/>
+     <ellipse cx="500" cy="245" rx="405" ry="188" stroke="#b45be0" transform="rotate(48 500 245)"/>
+    </g>
+    <g id="orbit-points"></g>
+    <circle cx="500" cy="245" r="134" fill="#45b9f4" opacity=".15" filter="url(#earthGlow)"/>
+    <circle cx="500" cy="245" r="120" fill="url(#earthFill)" stroke="url(#earthEdge)" stroke-width="4"/>
+    <g clip-path="url(#earthClip)" opacity=".8">
+     <path d="M390 190l28-28 32 8 10 24-21 18-8 35-28-7-22-26zM485 151l34-17 31 14 18 31-14 20-33-4-18 27-27-19-9-27zM540 237l32-19 34 14 20 36-17 28-33-5-22-22zM432 278l35-14 28 22-4 38-34 25-28-28z" fill="#79a985" opacity=".78"/>
+     <path d="M370 240q65-55 132-14t120-5v110H370z" fill="#1c668b" opacity=".45"/>
+     <path d="M385 145q80-35 145-5t105 0" fill="none" stroke="#c5efff" stroke-opacity=".25" stroke-width="7"/>
+    </g>
+    <circle cx="500" cy="245" r="120" fill="none" stroke="#b8e9ff" stroke-opacity=".45"/>
+   </svg>
+   <div style="position:absolute;left:13px;top:12px;font-size:10px;color:#c3d7eb;background:#071321bb;padding:6px 8px;border-radius:6px">SCHEMATISCHES ORBITMODELL · NICHT MASSSTÄBLICH</div>
+   <div style="position:absolute;right:13px;bottom:12px;font-size:10px;color:#9eafc8">Punkte = Stichproben der Klassenverteilung</div>
+  </div>
+  <aside class="orbit-side">
+   <div class="evidence-card"><h3>Orbitklassen ein-/ausblenden</h3><p class="evidence-sub">Wähle eine Klasse, um ihre Darstellung hervorzuheben.</p><div class="orbit-legend" id="orbit-legend"><span class="evidence-sub">Warte auf geprüfte Daten …</span></div></div>
+   <div class="evidence-card"><h3>Ansicht steuern</h3><div class="orbit-control-row"><button type="button" id="orbit-show-all">Alle Klassen</button><button type="button" id="orbit-focus-leo">LEO hervorheben</button><button type="button" id="orbit-pause">Bewegung pausieren</button></div><p class="evidence-sub" style="margin-top:9px">Die Orbitlinien dienen der Orientierung. Ihre Neigung, Höhe und Lage sind nicht aus individuellen TLE/OMM-Elementen rekonstruiert.</p></div>
+   <div class="orbit-detail" id="orbit-detail" aria-live="polite"><b>Interaktive Datenansicht</b><br>Wähle rechts eine Orbitklasse oder einen Punkt, um die zugrunde liegende Anzahl und Einordnung zu sehen.</div>
+   <div class="orbit-disclaimer"><b>Wichtige Datenabgrenzung:</b> Die Punktwolke ist eine visuelle Stichprobe, deren Dichte aus den tatsächlichen Klassenanteilen abgeleitet wird. Sie zeigt keine realen Objektkoordinaten, Bahnebenen oder Kollisionssituationen.</div>
+  </aside>
+ </div>
  <div class="kpis" style="grid-template-columns:repeat(3,1fr)" id="orbit-kpis">
   <article class="kpi"><div class="kpi-label">Datensätze</div><div class="kpi-value cyan" id="orbit-total">—</div><div class="kpi-sub">CelesTrak ACTIVE</div></article>
   <article class="kpi"><div class="kpi-label">Klassifiziert</div><div class="kpi-value" id="orbit-classified">—</div><div class="kpi-sub">Auswertbare Bahnelemente</div></article>
@@ -321,7 +382,55 @@ async function loadEventSummary(){
 loadEventSummary();
 
 
-async function loadOrbitDistribution(){
+function renderInteractiveOrbit(d){
+ const defs=[
+  {key:"leo",label:"LEO · niedrige Erdumlaufbahn",short:"LEO",color:"#159ee8",rx:185,ry:78,tilt:-18,description:"Niedrige Erdumlaufbahn: berechnetes Apogäum unter 2.000 km."},
+  {key:"meo",label:"MEO · mittlere Erdumlaufbahn",short:"MEO",color:"#ff9c36",rx:270,ry:116,tilt:22,description:"Mittlere Erdumlaufbahn nach den dokumentierten Perigäum-/Apogäum-Grenzen."},
+  {key:"geo_like",label:"GEO-ähnlich",short:"GEO",color:"#79df39",rx:350,ry:155,tilt:-8,description:"Grobe GEO-Näherung über mittlere Bewegung und Exzentrizität; keine präzise GEO-Bestimmung."},
+  {key:"heo_or_crossing",label:"HEO / kreuzende Bahnen",short:"HEO",color:"#b45be0",rx:405,ry:188,tilt:48,description:"Höher exzentrische oder die vereinfachte LEO-Höhengrenze kreuzende Bahnen."},
+  {key:"above_geo",label:"Oberhalb GEO",short:">GEO",color:"#aeb9c7",rx:430,ry:205,tilt:-35,description:"Perigäum ab 35.786 km; derzeit keine Datensätze in dieser Klasse."},
+  {key:"unclassified",label:"Nicht klassifiziert",short:"N/A",color:"#ffffff",rx:165,ry:65,tilt:65,description:"Erforderliche oder physikalisch plausible Bahnelemente fehlen."}
+ ];
+ const fmt=n=>Number(n||0).toLocaleString("de-DE");
+ const legend=document.getElementById("orbit-legend"),points=document.getElementById("orbit-points"),detail=document.getElementById("orbit-detail");
+ if(!legend||!points||!detail)return;
+ legend.replaceChildren();points.replaceChildren();
+ const total=Math.max(Number(d.record_count)||0,1),maxSamples=defs.map(x=>Number(d.counts[x.key]||0)).reduce((a,b)=>a+b,0);
+ const sampleTotal=440;
+ defs.forEach((item,index)=>{
+  const count=Number(d.counts[item.key]||0),share=count/total*100;
+  const btn=document.createElement("button");btn.type="button";btn.className="orbit-filter";btn.dataset.orbitKey=item.key;btn.setAttribute("aria-pressed","true");
+  const sw=document.createElement("i");sw.className="swatch";sw.style.background=item.color;sw.style.color=item.color;
+  const label=document.createElement("span");label.textContent=item.label;
+  const val=document.createElement("strong");val.textContent=fmt(count)+" · "+share.toLocaleString("de-DE",{maximumFractionDigits:1})+" %";
+  btn.append(sw,label,val);legend.append(btn);
+  btn.addEventListener("click",()=>toggleOrbit(item.key));
+  const n=count?Math.max(1,Math.round(count/total*sampleTotal)):0;
+  for(let j=0;j<n;j++){
+   const angle=(j*2.399963229728653+index*1.71),radius=Math.sqrt((j+.5)/Math.max(n,1));
+   const ex=item.rx*radius*Math.cos(angle),ey=item.ry*radius*Math.sin(angle);
+   const rad=item.tilt*Math.PI/180,x=500+ex*Math.cos(rad)-ey*Math.sin(rad),y=245+ex*Math.sin(rad)+ey*Math.cos(rad);
+   const dot=document.createElementNS("http://www.w3.org/2000/svg","circle");
+   dot.setAttribute("cx",x.toFixed(2));dot.setAttribute("cy",y.toFixed(2));dot.setAttribute("r",item.key==="leo"?"2.05":item.key==="meo"?"2.4":"2.7");
+   dot.setAttribute("fill",item.color);dot.setAttribute("class","orbit-dot orbit-class-"+item.key);dot.dataset.orbitKey=item.key;
+   dot.setAttribute("opacity",String(.5+((j*17)%45)/100));
+   dot.addEventListener("click",()=>{detail.innerHTML="<b>"+item.label+"</b><br>"+fmt(count)+" Datensätze · "+share.toLocaleString("de-DE",{maximumFractionDigits:2})+" % des qualitätsgeprüften Bestands.<br>"+item.description});
+   points.append(dot);
+  }
+ });
+ function toggleOrbit(key,force){
+  const btn=legend.querySelector('[data-orbit-key="'+key+'"]'),show=force??btn.getAttribute("aria-pressed")!=="true";
+  btn.setAttribute("aria-pressed",String(show));
+  document.querySelectorAll(".orbit-dot[data-orbit-key='"+key+"']").forEach(el=>el.classList.toggle("orbit-hidden",!show));
+  const item=defs.find(x=>x.key===key),count=Number(d.counts[key]||0);
+  detail.innerHTML="<b>"+item.label+"</b><br>"+fmt(count)+" Datensätze · "+(count/total*100).toLocaleString("de-DE",{maximumFractionDigits:2})+" % des qualitätsgeprüften Bestands.<br>"+item.description;
+ }
+ document.getElementById("orbit-show-all").onclick=()=>defs.forEach(x=>toggleOrbit(x.key,true));
+ document.getElementById("orbit-focus-leo").onclick=()=>defs.forEach(x=>toggleOrbit(x.key,x.key==="leo"));
+ const geometry=document.getElementById("orbit-geometry");
+ document.getElementById("orbit-pause").onclick=e=>{const paused=geometry.classList.toggle("orbit-spin");e.currentTarget.textContent=paused?"Bewegung pausieren":"Bewegung aktivieren";};
+ detail.innerHTML="<b>"+fmt(total)+" qualitätsgeprüfte Datensätze</b><br>"+fmt(d.raw_record_count??total)+" Rohdatensätze abgerufen · "+fmt(d.quality?.excluded_future_epoch_count||0)+" zukünftige Epoch-Datensätze ausgeschlossen.<br>Wähle eine Klasse für Details.";
+}\n\nasync function loadOrbitDistribution(){
  const status=document.getElementById("orbit-data-status"),bars=document.getElementById("orbit-bars");
  try{
   const response=await fetch("data/orbit-distribution/latest.json?ts="+Date.now(),{cache:"no-store"});
@@ -343,7 +452,7 @@ async function loadOrbitDistribution(){
   document.getElementById("orbit-total").textContent=d.record_count.toLocaleString("de-DE");
   document.getElementById("orbit-classified").textContent=d.classified_count.toLocaleString("de-DE");
   document.getElementById("orbit-retrieved").textContent=new Date(d.retrieved_at_utc).toLocaleString("de-DE",{timeZone:"UTC"});
-  const q=d.quality||{};
+  renderInteractiveOrbit(d);\n  const q=d.quality||{};
   const epochNote="Verwendete Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abruf: "+d.retrieved_at_utc+".";
   const rawMax=d.raw_source_epoch_max_utc||"nicht ausgewiesen";
   const qualityNote="Rohdaten: "+Number(d.raw_record_count??d.record_count).toLocaleString("de-DE")+" · ausgeschlossen (zukünftige Epochen > "+Number(q.future_epoch_tolerance_hours??6)+" h): "+Number(q.excluded_future_epoch_count||0).toLocaleString("de-DE")+" · fehlende/ungültige Epochen: "+Number(q.missing_or_invalid_epoch_count||0).toLocaleString("de-DE")+" · älter als "+Number(q.stale_epoch_threshold_days??30)+" Tage: "+Number(q.stale_epoch_count||0).toLocaleString("de-DE")+". Rohdaten-Maximum: "+rawMax+".";
