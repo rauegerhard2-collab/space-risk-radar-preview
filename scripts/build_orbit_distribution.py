@@ -22,6 +22,8 @@ MU_EARTH_KM3_S2 = 398600.4418
 EARTH_RADIUS_KM = 6378.137
 DAY_SECONDS = 86400
 MIN_REFRESH_HOURS = 20
+FUTURE_EPOCH_TOLERANCE_HOURS = 6
+STALE_EPOCH_DAYS = 30
 
 
 def parse_time(value: str | None) -> datetime | None:
@@ -85,7 +87,18 @@ def self_test() -> None:
         actual = classify(record)
         if actual != expected:
             raise AssertionError(f"{record}: expected {expected}, got {actual}")
-    print(f"Self-test passed: {len(cases)} classification cases")
+
+    now = datetime(2026, 11, 4, 12, 0, tzinfo=timezone.utc)
+    quality_test = build_summary([
+        {"MEAN_MOTION": 15.5, "ECCENTRICITY": 0.001, "EPOCH": "2026-11-04T11:00:00Z"},
+        {"MEAN_MOTION": 15.5, "ECCENTRICITY": 0.001, "EPOCH": "2026-11-05T12:00:00Z"},
+        {"MEAN_MOTION": 15.5, "ECCENTRICITY": 0.001, "EPOCH": None},
+    ], now)
+    assert quality_test["record_count"] == 1
+    assert quality_test["quality"]["excluded_future_epoch_count"] == 1
+    assert quality_test["quality"]["missing_or_invalid_epoch_count"] == 1
+    assert sum(quality_test["counts"].values()) == quality_test["record_count"]
+    print(f"Self-test passed: {len(cases)} classification cases plus epoch-quality gates")
 
 
 def retrieve_records() -> list[dict]:
@@ -114,6 +127,36 @@ def retrieve_records() -> list[dict]:
 
 
 def build_summary(records: list[dict], retrieved_at: datetime) -> dict:
+    # A source epoch is the time the orbital elements describe, not the retrieval time.
+    # A record materially dated in the future cannot be safely used in this snapshot.
+    cutoff = retrieved_at.timestamp() + FUTURE_EPOCH_TOLERANCE_HOURS * 3600
+    valid_records = []
+    parsed_epochs: list[datetime] = []
+    raw_epochs: list[datetime] = []
+    future_epoch_count = 0
+    missing_epoch_count = 0
+    stale_epoch_count = 0
+
+    for record in records:
+        epoch = parse_time(record.get("EPOCH"))
+        if epoch is None:
+            missing_epoch_count += 1
+            continue
+        epoch = epoch.astimezone(timezone.utc)
+        raw_epochs.append(epoch)
+        if epoch.timestamp() > cutoff:
+            future_epoch_count += 1
+            continue
+        valid_records.append(record)
+        parsed_epochs.append(epoch)
+        if (retrieved_at - epoch).total_seconds() > STALE_EPOCH_DAYS * DAY_SECONDS:
+            stale_epoch_count += 1
+
+    if not valid_records:
+        raise RuntimeError(
+            "No records passed the epoch-quality gate; refusing to publish an empty or future-dated snapshot."
+        )
+
     counts = {
         "leo": 0,
         "meo": 0,
@@ -122,22 +165,29 @@ def build_summary(records: list[dict], retrieved_at: datetime) -> dict:
         "above_geo": 0,
         "unclassified": 0,
     }
-    epochs = []
-    for record in records:
+    for record in valid_records:
         counts[classify(record)] += 1
-        epoch = parse_time(record.get("EPOCH"))
-        if epoch:
-            epochs.append(epoch.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"))
+
     return {
         "schema_version": 1,
         "source": "CelesTrak GP/OMM ACTIVE group",
         "source_url": URL,
         "retrieved_at_utc": retrieved_at.isoformat().replace("+00:00", "Z"),
-        "source_epoch_min_utc": min(epochs) if epochs else None,
-        "source_epoch_max_utc": max(epochs) if epochs else None,
-        "scope": "Records returned by the CelesTrak ACTIVE group only; not a complete global catalogue.",
-        "record_count": len(records),
-        "classified_count": len(records) - counts["unclassified"],
+        "source_epoch_min_utc": min(parsed_epochs).isoformat().replace("+00:00", "Z"),
+        "source_epoch_max_utc": max(parsed_epochs).isoformat().replace("+00:00", "Z"),
+        "raw_source_epoch_max_utc": max(raw_epochs).isoformat().replace("+00:00", "Z") if raw_epochs else None,
+        "scope": "Records returned by the CelesTrak ACTIVE group that pass the source-epoch quality gate; not a complete global catalogue.",
+        "raw_record_count": len(records),
+        "record_count": len(valid_records),
+        "classified_count": len(valid_records) - counts["unclassified"],
+        "quality": {
+            "future_epoch_tolerance_hours": FUTURE_EPOCH_TOLERANCE_HOURS,
+            "stale_epoch_threshold_days": STALE_EPOCH_DAYS,
+            "excluded_future_epoch_count": future_epoch_count,
+            "missing_or_invalid_epoch_count": missing_epoch_count,
+            "stale_epoch_count": stale_epoch_count,
+            "epoch_gate": "Records with no parseable EPOCH or an EPOCH more than 6 hours after retrieval are excluded from the distribution.",
+        },
         "classification_method": {
             "leo": "apogee altitude < 2,000 km",
             "meo": "perigee altitude >= 2,000 km and apogee altitude < 35,786 km, excluding GEO-like and high-eccentricity cases",
@@ -149,9 +199,12 @@ def build_summary(records: list[dict], retrieved_at: datetime) -> dict:
         "counts": counts,
         "limitations": [
             "The ACTIVE group is a provider-defined subset, not all catalogued objects.",
+            "Records without a parseable epoch and records more than 6 hours future-dated are excluded from the distribution and counted in quality metadata.",
+            "Records older than 30 days are retained but flagged by stale_epoch_count; old elements may not represent current orbit state.",
             "These are derived orbit-regime counts, not collision warnings, manoeuvres, or service-impact indicators.",
-            "Mean elements and broad altitude boundaries support approximate classification only.",
-            "Objects can change regime; counts depend on source epoch and group membership.",
+            "Mean elements and broad altitude boundaries support approximate classification only; this is not a precise propagator or conjunction analysis.",
+            "The GEO-like rule is a broad proxy based on mean motion and eccentricity, not an operational orbital-regime determination.",
+            "Objects can change regime; counts depend on source epoch, source coverage, and provider group membership.",
             "Raw source records are processed in memory and are not written to the public repository.",
         ],
         "attribution": "Source: CelesTrak. Derived summary produced by Space Risk Radar. See CelesTrak usage policy and GP format documentation.",
@@ -161,10 +214,10 @@ def build_summary(records: list[dict], retrieved_at: datetime) -> dict:
         ],
     }
 
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="run local classification tests without network access")
+    parser.add_argument("--force", action="store_true", help="bypass the refresh guard for one reviewed refresh")
     parser.add_argument("--output", default=str(OUT), help="summary JSON output path")
     args = parser.parse_args()
     if args.check:
@@ -173,7 +226,7 @@ def main() -> int:
 
     output = Path(args.output)
     now = datetime.now(timezone.utc)
-    if output.exists():
+    if output.exists() and not args.force:
         try:
             previous = json.loads(output.read_text(encoding="utf-8"))
             last = parse_time(previous.get("retrieved_at_utc"))

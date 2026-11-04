@@ -343,11 +343,14 @@ async function loadOrbitDistribution(){
   document.getElementById("orbit-total").textContent=d.record_count.toLocaleString("de-DE");
   document.getElementById("orbit-classified").textContent=d.classified_count.toLocaleString("de-DE");
   document.getElementById("orbit-retrieved").textContent=new Date(d.retrieved_at_utc).toLocaleString("de-DE",{timeZone:"UTC"});
-  const epochNote="Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abgerufen: "+d.retrieved_at_utc+".";
-  const maxEpoch=d.source_epoch_max_utc?Date.parse(d.source_epoch_max_utc):NaN;
-  const retrieval=Date.parse(d.retrieved_at_utc);
-  document.getElementById("orbit-epoch").textContent=epochNote+((Number.isFinite(maxEpoch)&&Number.isFinite(retrieval)&&maxEpoch>retrieval)?" Hinweis zur Datenqualität: Mindestens ein Bahnelement weist einen Epoch-Zeitstempel nach dem Abrufzeitpunkt auf. Das muss fachlich mit der Quelle geklärt werden; die Verteilung ist daher vorläufig.":"");
-  status.textContent="Datensatz geladen";status.className="badge";
+  const q=d.quality||{};
+  const epochNote="Verwendete Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abruf: "+d.retrieved_at_utc+".";
+  const rawMax=d.raw_source_epoch_max_utc||"nicht ausgewiesen";
+  const qualityNote="Rohdaten: "+Number(d.raw_record_count??d.record_count).toLocaleString("de-DE")+" · ausgeschlossen (zukünftige Epochen > "+Number(q.future_epoch_tolerance_hours??6)+" h): "+Number(q.excluded_future_epoch_count||0).toLocaleString("de-DE")+" · fehlende/ungültige Epochen: "+Number(q.missing_or_invalid_epoch_count||0).toLocaleString("de-DE")+" · älter als "+Number(q.stale_epoch_threshold_days??30)+" Tage: "+Number(q.stale_epoch_count||0).toLocaleString("de-DE")+". Rohdaten-Maximum: "+rawMax+".";
+  document.getElementById("orbit-epoch").textContent=epochNote+" "+qualityNote+" Datensätze mit deutlich zukünftiger oder fehlender Epochenzeit werden nicht in die Balken eingerechnet.";
+  if(Number(q.excluded_future_epoch_count||0)>0||Number(q.missing_or_invalid_epoch_count||0)>0||Number(q.stale_epoch_count||0)>0){status.textContent="Geladen · Qualitätsprüfung aktiv";status.className="badge amber";}
+  else{status.textContent="Geladen · Epochen geprüft";status.className="badge";}
+  if(!d.quality){status.textContent="Geladen · Qualitätsmetadaten fehlen";status.className="badge amber";}
  }catch(error){
   status.textContent="Noch nicht verfügbar";status.className="badge amber";
   const p=document.createElement("p");p.className="evidence-sub";p.textContent=String(error.message||error)+"; es werden keine Zahlen geschätzt oder ersatzweise angezeigt.";bars.replaceChildren(p);
