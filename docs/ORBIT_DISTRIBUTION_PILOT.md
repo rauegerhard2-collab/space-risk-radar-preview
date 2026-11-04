@@ -53,3 +53,24 @@ Boundaries are heuristic and can create category discontinuities. Mean elements 
 3. Exclusion and stale counts are visible in the dashboard.
 4. The scheduled/manual update workflow succeeds and the published JSON is inspected.
 5. Only after review is this branch merged to preview `main`. Production v1.1 remains unchanged.
+
+
+## Interactive orbital globe (preview)
+
+The preview includes an interactive SVG globe driven by the published aggregate JSON:
+- Category counts and shares are read from `data/orbit-distribution/latest.json`; the chart does not hardcode the counts.
+- Category filters can show/hide each class, focus LEO, restore all classes, and pause/resume the slow orbital animation.
+- The point cloud is a deterministic visual sample whose number of points is proportional to each class share. It is not a list of real objects and does not represent actual object positions.
+- Orbit ellipses and inclinations are schematic. They are not reconstructed from individual orbital elements.
+- Clicking a point or category shows the real aggregate count, share, and category definition.
+- If the feed is unavailable, the existing data-loading error state remains; no substitute counts are invented.
+
+### Architecture for a future operational Space Risk Radar
+
+The visualization is deliberately split into layers:
+1. **Aggregate layer (current):** verified class counts and quality metadata from the CelesTrak ACTIVE summary.
+2. **Object layer (future):** individual objects keyed by stable catalogue identifier, with element epoch, source, and validity metadata. Real positions must only be drawn after propagation to a shared UTC display time.
+3. **Conjunction layer (future):** CDM/conjunction events with provider, issue time, TCA, miss distance, relative velocity, probability/covariance availability, and access/redistribution status.
+4. **Manoeuvre layer (future):** observed or reported manoeuvres with source, confidence, time window, and explicit distinction between confirmed and inferred events.
+
+The object, conjunction, and manoeuvre layers must remain disabled until suitable licensed source data and validation are available. The current aggregate layer must never be visually presented as real-time satellite positions or collision warnings.
