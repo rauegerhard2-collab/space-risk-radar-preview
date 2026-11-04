@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Retrieve and summarize CelesTrak ACTIVE group
-        run: python scripts/build_orbit_distribution.py
+        run: python scripts/build_orbit_distribution.py --force
       - name: Commit derived summary only when changed
         run: |
           git add data/orbit-distribution/latest.json
