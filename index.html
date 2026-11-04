@@ -343,7 +343,10 @@ async function loadOrbitDistribution(){
   document.getElementById("orbit-total").textContent=d.record_count.toLocaleString("de-DE");
   document.getElementById("orbit-classified").textContent=d.classified_count.toLocaleString("de-DE");
   document.getElementById("orbit-retrieved").textContent=new Date(d.retrieved_at_utc).toLocaleString("de-DE",{timeZone:"UTC"});
-  document.getElementById("orbit-epoch").textContent="Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abgerufen: "+d.retrieved_at_utc+".";
+  const epochNote="Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abgerufen: "+d.retrieved_at_utc+".";
+  const maxEpoch=d.source_epoch_max_utc?Date.parse(d.source_epoch_max_utc):NaN;
+  const retrieval=Date.parse(d.retrieved_at_utc);
+  document.getElementById("orbit-epoch").textContent=epochNote+((Number.isFinite(maxEpoch)&&Number.isFinite(retrieval)&&maxEpoch>retrieval)?" Hinweis zur Datenqualität: Mindestens ein Bahnelement weist einen Epoch-Zeitstempel nach dem Abrufzeitpunkt auf. Das muss fachlich mit der Quelle geklärt werden; die Verteilung ist daher vorläufig.":"");
   status.textContent="Datensatz geladen";status.className="badge";
  }catch(error){
   status.textContent="Noch nicht verfügbar";status.className="badge amber";
