@@ -109,6 +109,12 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 #orbit-points{display:none}
 .orbit-3d-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;display:block;touch-action:pan-y}
 .orbit-stage>div{z-index:3}
+
+/* Official Orbital Radar live embed — isolated to the Preview orbital window */
+#orbital-map .orbital-embed{width:100%;min-height:680px;overflow:hidden;border:1px solid #263c59;border-radius:10px;background:#030811}
+#orbital-map .orbital-embed iframe{display:block;width:100%;height:680px;border:0;background:#030811}
+#orbital-map .orbital-embed-note{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #ffffff12;color:var(--muted);font-size:10px}
+@media(max-width:600px){#orbital-map .orbital-embed,#orbital-map .orbital-embed iframe{min-height:620px;height:620px}}
 </style>
 </head>
 <body>
@@ -128,28 +134,11 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 </section>
 <div class="layout">
 <section class="panel orbital" id="orbital-map">
- <div class="panel-head"><div><div class="section-kicker">01 / Orbital environment</div><h2>Die Erde im orbitalen Umfeld</h2><div class="sub">Interaktive, datenbasierte Darstellung der qualitätsgeprüften CelesTrak-Orbitverteilung</div></div><span class="badge amber" id="orbit-data-status-top">Daten werden geprüft …</span></div>
- <div class="orbit-viz" aria-label="Interaktive dreidimensionale, schematische Darstellung der Orbitklassen">
-  <div class="orbit-stage">
-   <canvas id="orbit-3d-back" class="orbit-3d-back" aria-hidden="true"></canvas>
-   <svg id="orbit-globe" viewBox="0 0 1000 900" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
-<title id="orbit-svg-title">Fotorealistische Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
-<desc id="orbit-svg-desc">Animiertes, fotorealistisches GIF mit rotierender Erde, Atmosphäre und Sternenhimmel. Darüber werden interaktive Stichprobenpunkte aus der qualitätsgeprüften CelesTrak-Orbitverteilung eingeblendet. Die Punkte zeigen Klassenanteile, keine realen Objektpositionen.</desc>
-<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="220" y="170" width="560" height="560" preserveAspectRatio="xMidYMid meet"/>
-<g id="orbit-points"></g>
-</svg>
-<canvas id="orbit-3d-canvas" class="orbit-3d-canvas" aria-label="Schematische dreidimensionale Orbitbahnen mit bewegten Satelliten- und Trümmerpartikeln"></canvas>
-   <div style="position:absolute;left:13px;top:12px;font-size:10px;color:#c3d7eb;background:#071321bb;padding:6px 8px;border-radius:6px">ROTIERENDE FOTOREALISTISCHE ERDE · DATENPUNKTE INTERAKTIV ÜBERLAGERT</div>
-   <div style="position:absolute;right:13px;bottom:12px;font-size:10px;color:#9eafc8">3D-Bahnen = schematische Klassenmodelle · Partikel = dynamische Visualisierung</div>
-  </div>
-  <aside class="orbit-side">
-   <div class="evidence-card"><h3>Orbitklassen ein-/ausblenden</h3><p class="evidence-sub">Wähle eine Klasse, um ihre Darstellung hervorzuheben.</p><div class="orbit-legend" id="orbit-legend"><span class="evidence-sub">Warte auf geprüfte Daten …</span></div></div>
-   <div class="evidence-card"><h3>Ansicht steuern</h3><div class="orbit-control-row"><button type="button" id="orbit-show-all">Alle Klassen</button><button type="button" id="orbit-focus-leo">LEO hervorheben</button><button type="button" id="orbit-pause">Bewegung pausieren</button></div><p class="evidence-sub" style="margin-top:9px">Die räumlichen Bahnebenen und Bewegungen sind schematisch modelliert. Individuelle TLE/OMM-Bahnelemente werden hier nicht visualisiert.</p></div>
-   <div class="orbit-detail" id="orbit-detail" aria-live="polite"><b>Interaktive Datenansicht</b><br>Wähle rechts eine Orbitklasse oder einen Punkt, um die zugrunde liegende Anzahl und Einordnung zu sehen.</div>
-   <div class="orbit-disclaimer"><b>Wichtige Datenabgrenzung:</b> Die 3D-Bahnen und bewegten Partikel veranschaulichen Orbitklassen, unterschiedliche Bahnneigungen und Umlaufbewegungen. Sie zeigen keine individuellen Objektkoordinaten, Live-Positionen oder Kollisionssituationen.</div>
-  </aside>
+ <div class="panel-head"><div><div class="section-kicker">01 / Orbital environment</div><h2>Die Erde im orbitalen Umfeld</h2><div class="sub">Offizielle Live-Karte von Orbital Radar · katalogisierte Satelliten, Trümmer und Raketenstufen</div></div><span class="badge">Externe Live-Ansicht</span></div>
+ <div class="orbital-embed" aria-label="Eingebettete Live-Karte von Orbital Radar">
+  <iframe src="https://orbitalradar.com/space-debris-map?embed=1" width="100%" height="680" loading="lazy" title="Orbital Radar – Space Debris Map"></iframe>
  </div>
- <div class="orbital-caption"><span class="legend"><span><i style="background:#159ee8"></i>LEO</span><span><i style="background:#ff9c36"></i>MEO</span><span><i style="background:#79df39"></i>GEO-ähnlich</span><span><i style="background:#b45be0"></i>HEO / kreuzend</span></span><span>Klassenanteile aus geprüftem Datenbestand</span></div>
+ <div class="orbital-embed-note"><span>Quelle: <a href="https://orbitalradar.com/space-debris-map" target="_blank" rel="noopener">Orbital Radar</a> · Externe Live-Visualisierung und Daten des Anbieters.</span><span>Informations- und Awareness-Darstellung · kein operatives Kollisionswarnsystem.</span></div>
 </section>
 <section class="panel" id="trends"><div class="panel-head"><div><div class="section-kicker">02 / Environment trends</div><h2>Entwicklung der Objektpopulation</h2><div class="sub">Veröffentlichte Daten-Snapshots · keine monatliche Messreihe</div></div></div>
 <div class="chart-controls" id="chart-controls"><button class="active" data-key="tracked">Katalogisiert</button><button data-key="large">Modelliert &gt;10 cm</button><button data-key="medium">Trümmer 1–10 cm</button></div>
