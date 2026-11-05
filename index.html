@@ -102,6 +102,12 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 .orbit-hidden{display:none}
 @media(max-width:850px){.orbit-viz{grid-template-columns:1fr}.orbit-stage,.orbit-stage svg{min-height:330px}}
 @media(prefers-reduced-motion:no-preference){.orbit-spin{transform-origin:500px 450px;animation:orbitSlowSpin 100s linear infinite}@keyframes orbitSlowSpin{to{transform:rotate(360deg)}}}
+/* 3D orbital layer: transparent canvas over the unchanged animated Earth GIF */
+.orbit-stage{isolation:isolate}
+#orbit-globe{position:relative;z-index:1}
+#orbit-points{display:none}
+.orbit-3d-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;display:block;touch-action:pan-y}
+.orbit-stage>div{z-index:3}
 </style>
 </head>
 <body>
@@ -122,7 +128,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <div class="layout">
 <section class="panel orbital" id="orbital-map">
  <div class="panel-head"><div><div class="section-kicker">01 / Orbital environment</div><h2>Die Erde im orbitalen Umfeld</h2><div class="sub">Interaktive, datenbasierte Darstellung der qualitätsgeprüften CelesTrak-Orbitverteilung</div></div><span class="badge amber" id="orbit-data-status-top">Daten werden geprüft …</span></div>
- <div class="orbit-viz" aria-label="Interaktive schematische Darstellung der Orbitklassen">
+ <div class="orbit-viz" aria-label="Interaktive dreidimensionale, schematische Darstellung der Orbitklassen">
   <div class="orbit-stage">
    <svg id="orbit-globe" viewBox="0 0 1000 900" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
 <title id="orbit-svg-title">Fotorealistische Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
@@ -130,14 +136,15 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="50" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"/>
 <g id="orbit-points"></g>
 </svg>
+<canvas id="orbit-3d-canvas" class="orbit-3d-canvas" aria-label="Schematische dreidimensionale Orbitbahnen mit bewegten Satelliten- und Trümmerpartikeln"></canvas>
    <div style="position:absolute;left:13px;top:12px;font-size:10px;color:#c3d7eb;background:#071321bb;padding:6px 8px;border-radius:6px">ROTIERENDE FOTOREALISTISCHE ERDE · DATENPUNKTE INTERAKTIV ÜBERLAGERT</div>
-   <div style="position:absolute;right:13px;bottom:12px;font-size:10px;color:#9eafc8">Punkte = Stichproben der Klassenverteilung</div>
+   <div style="position:absolute;right:13px;bottom:12px;font-size:10px;color:#9eafc8">3D-Bahnen = schematische Klassenmodelle · Partikel = dynamische Visualisierung</div>
   </div>
   <aside class="orbit-side">
    <div class="evidence-card"><h3>Orbitklassen ein-/ausblenden</h3><p class="evidence-sub">Wähle eine Klasse, um ihre Darstellung hervorzuheben.</p><div class="orbit-legend" id="orbit-legend"><span class="evidence-sub">Warte auf geprüfte Daten …</span></div></div>
-   <div class="evidence-card"><h3>Ansicht steuern</h3><div class="orbit-control-row"><button type="button" id="orbit-show-all">Alle Klassen</button><button type="button" id="orbit-focus-leo">LEO hervorheben</button><button type="button" id="orbit-pause">Bewegung pausieren</button></div><p class="evidence-sub" style="margin-top:9px">Die Orbitlinien dienen der Orientierung. Ihre Neigung, Höhe und Lage sind nicht aus individuellen TLE/OMM-Elementen rekonstruiert.</p></div>
+   <div class="evidence-card"><h3>Ansicht steuern</h3><div class="orbit-control-row"><button type="button" id="orbit-show-all">Alle Klassen</button><button type="button" id="orbit-focus-leo">LEO hervorheben</button><button type="button" id="orbit-pause">Bewegung pausieren</button></div><p class="evidence-sub" style="margin-top:9px">Die räumlichen Bahnebenen und Bewegungen sind schematisch modelliert. Individuelle TLE/OMM-Bahnelemente werden hier nicht visualisiert.</p></div>
    <div class="orbit-detail" id="orbit-detail" aria-live="polite"><b>Interaktive Datenansicht</b><br>Wähle rechts eine Orbitklasse oder einen Punkt, um die zugrunde liegende Anzahl und Einordnung zu sehen.</div>
-   <div class="orbit-disclaimer"><b>Wichtige Datenabgrenzung:</b> Die Punktwolke ist eine visuelle Stichprobe, deren Dichte aus den tatsächlichen Klassenanteilen abgeleitet wird. Sie zeigt keine realen Objektkoordinaten, Bahnebenen oder Kollisionssituationen.</div>
+   <div class="orbit-disclaimer"><b>Wichtige Datenabgrenzung:</b> Die 3D-Bahnen und bewegten Partikel veranschaulichen Orbitklassen, unterschiedliche Bahnneigungen und Umlaufbewegungen. Sie zeigen keine individuellen Objektkoordinaten, Live-Positionen oder Kollisionssituationen.</div>
   </aside>
  </div>
  <div class="orbital-caption"><span class="legend"><span><i style="background:#159ee8"></i>LEO</span><span><i style="background:#ff9c36"></i>MEO</span><span><i style="background:#79df39"></i>GEO-ähnlich</span><span><i style="background:#b45be0"></i>HEO / kreuzend</span></span><span>Klassenanteile aus geprüftem Datenbestand</span></div>
@@ -358,19 +365,77 @@ loadEventSummary();
 
 function renderInteractiveOrbit(d){
  const defs=[
-  {key:"leo",label:"LEO · niedrige Erdumlaufbahn",short:"LEO",color:"#159ee8",rx:185,ry:78,tilt:-18,description:"Niedrige Erdumlaufbahn: berechnetes Apogäum unter 2.000 km."},
-  {key:"meo",label:"MEO · mittlere Erdumlaufbahn",short:"MEO",color:"#ff9c36",rx:270,ry:116,tilt:22,description:"Mittlere Erdumlaufbahn nach den dokumentierten Perigäum-/Apogäum-Grenzen."},
-  {key:"geo_like",label:"GEO-ähnlich",short:"GEO",color:"#79df39",rx:350,ry:155,tilt:-8,description:"Grobe GEO-Näherung über mittlere Bewegung und Exzentrizität; keine präzise GEO-Bestimmung."},
-  {key:"heo_or_crossing",label:"HEO / kreuzende Bahnen",short:"HEO",color:"#b45be0",rx:405,ry:188,tilt:48,description:"Höher exzentrische oder die vereinfachte LEO-Höhengrenze kreuzende Bahnen."},
-  {key:"above_geo",label:"Oberhalb GEO",short:">GEO",color:"#aeb9c7",rx:430,ry:205,tilt:-35,description:"Perigäum ab 35.786 km; derzeit keine Datensätze in dieser Klasse."},
-  {key:"unclassified",label:"Nicht klassifiziert",short:"N/A",color:"#ffffff",rx:165,ry:65,tilt:65,description:"Erforderliche oder physikalisch plausible Bahnelemente fehlen."}
+  {key:"leo",label:"LEO · niedrige Erdumlaufbahn",short:"LEO",color:"#159ee8",radius:1.10,inclination:52,node:-28,speed:.052,description:"Niedrige Erdumlaufbahn: berechnetes Apogäum unter 2.000 km. Die Partikel bewegen sich auf schematisch geneigten Bahnen."},
+  {key:"meo",label:"MEO · mittlere Erdumlaufbahn",short:"MEO",color:"#ff9c36",radius:1.29,inclination:28,node:34,speed:.027,description:"Mittlere Erdumlaufbahn nach den dokumentierten Perigäum-/Apogäum-Grenzen."},
+  {key:"geo_like",label:"GEO-ähnlich",short:"GEO",color:"#79df39",radius:1.48,inclination:4,node:8,speed:.010,description:"Grobe GEO-Näherung über mittlere Bewegung und Exzentrizität. Die dargestellte Bewegung ist relativ zur Erde stark verlangsamt; die Bahnebene liegt annähernd in der Äquatorebene."},
+  {key:"heo_or_crossing",label:"HEO / kreuzende Bahnen",short:"HEO",color:"#b45be0",radius:1.62,inclination:67,node:72,speed:.043,description:"Höher exzentrische oder die vereinfachte LEO-Höhengrenze kreuzende Bahnen; hier als geneigte, vereinfachte Ellipsen dargestellt."},
+  {key:"above_geo",label:"Oberhalb GEO",short:">GEO",color:"#aeb9c7",radius:1.73,inclination:38,node:-65,speed:.008,description:"Perigäum ab 35.786 km; derzeit keine Datensätze in dieser Klasse."},
+  {key:"unclassified",label:"Nicht klassifiziert",short:"N/A",color:"#ffffff",radius:1.18,inclination:76,node:125,speed:.035,description:"Erforderliche oder physikalisch plausible Bahnelemente fehlen."}
  ];
  const fmt=n=>Number(n||0).toLocaleString("de-DE");
  const legend=document.getElementById("orbit-legend"),points=document.getElementById("orbit-points"),detail=document.getElementById("orbit-detail");
- if(!legend||!points||!detail)return;
+ const canvas=document.getElementById("orbit-3d-canvas"),stage=canvas?.parentElement;
+ if(!legend||!points||!detail||!canvas||!stage)return;
+ const ctx=canvas.getContext("2d"); if(!ctx)return;
  legend.replaceChildren();points.replaceChildren();
- const total=Math.max(Number(d.record_count)||0,1),maxSamples=defs.map(x=>Number(d.counts[x.key]||0)).reduce((a,b)=>a+b,0);
- const sampleTotal=440;
+ const total=Math.max(Number(d.record_count)||0,1),sampleTotal=440;
+ let paused=false,visible={},hits=[],last=0,elapsed=0,raf=0,w=0,h=0,dpr=1;
+ defs.forEach(item=>visible[item.key]=true);
+ const resize=()=>{
+  const r=stage.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+ };
+ resize();if(window.ResizeObserver){new ResizeObserver(resize).observe(stage)}else window.addEventListener("resize",resize);
+ const rad=n=>n*Math.PI/180;
+ function project(theta,item){
+  const rr=Math.min(w,h)*.425*item.radius;
+  let x=rr*Math.cos(theta),y=rr*Math.sin(theta),z=0;
+  const inc=rad(item.inclination),node=rad(item.node);
+  const yi=y*Math.cos(inc)-z*Math.sin(inc),zi=y*Math.sin(inc)+z*Math.cos(inc);y=yi;z=zi;
+  const xn=x*Math.cos(node)-y*Math.sin(node),yn=x*Math.sin(node)+y*Math.cos(node);x=xn;y=yn;
+  const yaw=-.48,pitch=.58;
+  const x2=x*Math.cos(yaw)+z*Math.sin(yaw),z2=-x*Math.sin(yaw)+z*Math.cos(yaw);
+  const y2=y*Math.cos(pitch)-z2*Math.sin(pitch),z3=y*Math.sin(pitch)+z2*Math.cos(pitch);
+  const perspective=1/(1+z3/(Math.min(w,h)*2.7));
+  return {x:w/2+x2*perspective,y:h/2+y2*perspective,z:z3,scale:perspective};
+ }
+ const objects=defs.map((item,index)=>{
+  const count=Number(d.counts[item.key]||0),n=count?Math.max(5,Math.min(34,Math.round(count/total*sampleTotal/5))):0;
+  return Array.from({length:n},(_,j)=>({angle:(j*2.399963229728653+index*1.71)%(Math.PI*2),speed:item.speed*(.82+(j%7)*.055),size:item.key==="leo"?1.8:2.15,alpha:.55+((j*17)%40)/100}));
+ });
+ function drawOrbit(item){
+  const segments=180;
+  for(let k=0;k<segments;k++){
+   const p1=project(k/segments*Math.PI*2,item),p2=project((k+1)/segments*Math.PI*2,item);
+   const front=(p1.z+p2.z)/2<0;
+   ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
+   ctx.strokeStyle=item.color;ctx.globalAlpha=front?.22:.58;ctx.lineWidth=front?1.05:1.55;ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+ }
+ function frame(now){
+  if(!paused&&last)elapsed+=(now-last)/1000;last=now;
+  ctx.clearRect(0,0,w,h);hits=[];
+  defs.forEach((item,index)=>{
+   if(!visible[item.key])return;
+   drawOrbit(item);
+   objects[index].forEach(obj=>{
+    if(!paused)obj.angle=(obj.angle+obj.speed*(now/1000-last/1000+0.016))%(Math.PI*2);
+    const p=project(obj.angle,item);hits.push({x:p.x,y:p.y,item,obj});
+    ctx.beginPath();ctx.arc(p.x,p.y,obj.size*p.scale,0,Math.PI*2);
+    ctx.fillStyle=item.color;ctx.globalAlpha=obj.alpha;ctx.shadowColor=item.color;ctx.shadowBlur=7;ctx.fill();ctx.shadowBlur=0;
+   });
+  });
+  ctx.globalAlpha=1;
+  // Subtle depth cue: front-facing orbital arcs are brighter; the GIF remains untouched underneath.
+  raf=requestAnimationFrame(frame);
+ }
+ canvas.onclick=e=>{
+  const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+  let best=null,dist=13;
+  hits.forEach(hit=>{const q=Math.hypot(hit.x-x,hit.y-y);if(q<dist){dist=q;best=hit}});
+  if(best){const item=best.item,count=Number(d.counts[item.key]||0);detail.innerHTML="<b>"+item.label+"</b><br>"+fmt(count)+" Datensätze · "+(count/total*100).toLocaleString("de-DE",{maximumFractionDigits:2})+" % des qualitätsgeprüften Bestands.<br>"+item.description+"<br><span style='color:#9eafc8'>Bewegtes Visualisierungsobjekt · keine identifizierte Live-Position.</span>"}
+ };
  defs.forEach((item,index)=>{
   const count=Number(d.counts[item.key]||0),share=count/total*100;
   const btn=document.createElement("button");btn.type="button";btn.className="orbit-filter";btn.dataset.orbitKey=item.key;btn.setAttribute("aria-pressed","true");
@@ -379,33 +444,21 @@ function renderInteractiveOrbit(d){
   const val=document.createElement("strong");val.textContent=fmt(count)+" · "+share.toLocaleString("de-DE",{maximumFractionDigits:1})+" %";
   btn.append(sw,label,val);legend.append(btn);
   btn.addEventListener("click",()=>toggleOrbit(item.key));
-  const n=count?Math.max(1,Math.round(count/total*sampleTotal)):0;
-  for(let j=0;j<n;j++){
-   const angle=(j*2.399963229728653+index*1.71),radius=Math.sqrt((j+.5)/Math.max(n,1));
-   const ex=item.rx*radius*Math.cos(angle),ey=item.ry*radius*Math.sin(angle);
-   const rad=item.tilt*Math.PI/180,x=500+ex*Math.cos(rad)-ey*Math.sin(rad),y=450+ex*Math.sin(rad)+ey*Math.cos(rad);
-   const dot=document.createElementNS("http://www.w3.org/2000/svg","circle");
-   dot.setAttribute("cx",x.toFixed(2));dot.setAttribute("cy",y.toFixed(2));dot.setAttribute("r",item.key==="leo"?"2.05":item.key==="meo"?"2.4":"2.7");
-   dot.setAttribute("fill",item.color);dot.setAttribute("class","orbit-dot orbit-class-"+item.key);dot.dataset.orbitKey=item.key;
-   dot.setAttribute("opacity",String(.5+((j*17)%45)/100));
-   dot.addEventListener("click",()=>{detail.innerHTML="<b>"+item.label+"</b><br>"+fmt(count)+" Datensätze · "+share.toLocaleString("de-DE",{maximumFractionDigits:2})+" % des qualitätsgeprüften Bestands.<br>"+item.description});
-   points.append(dot);
-  }
  });
  function toggleOrbit(key,force){
-  const btn=legend.querySelector('[data-orbit-key="'+key+'"]'),show=force??btn.getAttribute("aria-pressed")!=="true";
-  btn.setAttribute("aria-pressed",String(show));
-  document.querySelectorAll(".orbit-dot[data-orbit-key='"+key+"']").forEach(el=>el.classList.toggle("orbit-hidden",!show));
+  const btn=legend.querySelector('[data-orbit-key="'+key+'"]'),show=force??!visible[key];
+  visible[key]=show;btn.setAttribute("aria-pressed",String(show));
   const item=defs.find(x=>x.key===key),count=Number(d.counts[key]||0);
   detail.innerHTML="<b>"+item.label+"</b><br>"+fmt(count)+" Datensätze · "+(count/total*100).toLocaleString("de-DE",{maximumFractionDigits:2})+" % des qualitätsgeprüften Bestands.<br>"+item.description;
  }
  document.getElementById("orbit-show-all").onclick=()=>defs.forEach(x=>toggleOrbit(x.key,true));
  document.getElementById("orbit-focus-leo").onclick=()=>defs.forEach(x=>toggleOrbit(x.key,x.key==="leo"));
- const geometry=document.getElementById("orbit-points");
- document.getElementById("orbit-pause").onclick=e=>{const paused=geometry.classList.toggle("orbit-spin");e.currentTarget.textContent=paused?"Bewegung pausieren":"Bewegung aktivieren";};
- detail.innerHTML="<b>"+fmt(total)+" qualitätsgeprüfte Datensätze</b><br>"+fmt(d.raw_record_count??total)+" Rohdatensätze abgerufen · "+fmt(d.quality?.excluded_future_epoch_count||0)+" zukünftige Epoch-Datensätze ausgeschlossen.<br>Wähle eine Klasse für Details.";
+ document.getElementById("orbit-pause").onclick=e=>{
+  paused=!paused;e.currentTarget.textContent=paused?"Bewegung aktivieren":"Bewegung pausieren";
+ };
+ cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
+ detail.innerHTML="<b>"+fmt(total)+" qualitätsgeprüfte Datensätze</b><br>"+fmt(d.raw_record_count??total)+" Rohdatensätze abgerufen · "+fmt(d.quality?.excluded_future_epoch_count||0)+" zukünftige Epoch-Datensätze ausgeschlossen.<br>Die 3D-Bahnen und Partikel sind eine dynamische, schematische Visualisierung der Orbitklassen – keine individuellen Live-Positionen.";
 }
-
 async function loadOrbitDistribution(){
  const status=document.getElementById("orbit-data-status"),bars=document.getElementById("orbit-bars");
  try{
