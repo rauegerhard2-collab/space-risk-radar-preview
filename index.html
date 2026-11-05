@@ -104,6 +104,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 @media(prefers-reduced-motion:no-preference){.orbit-spin{transform-origin:500px 450px;animation:orbitSlowSpin 100s linear infinite}@keyframes orbitSlowSpin{to{transform:rotate(360deg)}}}
 /* 3D orbital layer: transparent canvas over the unchanged animated Earth GIF */
 .orbit-stage{isolation:isolate}
+#orbit-3d-back{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
 #orbit-globe{position:relative;z-index:1}
 #orbit-points{display:none}
 .orbit-3d-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;display:block;touch-action:pan-y}
@@ -130,10 +131,11 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
  <div class="panel-head"><div><div class="section-kicker">01 / Orbital environment</div><h2>Die Erde im orbitalen Umfeld</h2><div class="sub">Interaktive, datenbasierte Darstellung der qualitätsgeprüften CelesTrak-Orbitverteilung</div></div><span class="badge amber" id="orbit-data-status-top">Daten werden geprüft …</span></div>
  <div class="orbit-viz" aria-label="Interaktive dreidimensionale, schematische Darstellung der Orbitklassen">
   <div class="orbit-stage">
+   <canvas id="orbit-3d-back" class="orbit-3d-back" aria-hidden="true"></canvas>
    <svg id="orbit-globe" viewBox="0 0 1000 900" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
 <title id="orbit-svg-title">Fotorealistische Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
 <desc id="orbit-svg-desc">Animiertes, fotorealistisches GIF mit rotierender Erde, Atmosphäre und Sternenhimmel. Darüber werden interaktive Stichprobenpunkte aus der qualitätsgeprüften CelesTrak-Orbitverteilung eingeblendet. Die Punkte zeigen Klassenanteile, keine realen Objektpositionen.</desc>
-<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="104" y="54" width="792" height="792" preserveAspectRatio="xMidYMid meet"/>
+<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="220" y="170" width="560" height="560" preserveAspectRatio="xMidYMid meet"/>
 <g id="orbit-points"></g>
 </svg>
 <canvas id="orbit-3d-canvas" class="orbit-3d-canvas" aria-label="Schematische dreidimensionale Orbitbahnen mit bewegten Satelliten- und Trümmerpartikeln"></canvas>
@@ -374,24 +376,27 @@ function renderInteractiveOrbit(d){
  ];
  const fmt=n=>Number(n||0).toLocaleString("de-DE");
  const legend=document.getElementById("orbit-legend"),points=document.getElementById("orbit-points"),detail=document.getElementById("orbit-detail");
- const canvas=document.getElementById("orbit-3d-canvas"),stage=canvas?.parentElement;
- if(!legend||!points||!detail||!canvas||!stage)return;
- const ctx=canvas.getContext("2d"); if(!ctx)return;
+ const canvas=document.getElementById("orbit-3d-canvas"),backCanvas=document.getElementById("orbit-3d-back"),stage=canvas?.parentElement;
+ if(!legend||!points||!detail||!canvas||!backCanvas||!stage)return;
+ const ctx=canvas.getContext("2d"),backCtx=backCanvas.getContext("2d"); if(!ctx||!backCtx)return;
  legend.replaceChildren();points.replaceChildren();
  const total=Math.max(Number(d.record_count)||0,1),sampleTotal=440;
  let paused=false,visible={},hits=[],last=0,elapsed=0,raf=0,w=0,h=0,dpr=1;
  defs.forEach(item=>visible[item.key]=true);
  const resize=()=>{
   const r=stage.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);dpr=Math.min(window.devicePixelRatio||1,2);
-  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+  [canvas,backCanvas].forEach(layer=>{layer.width=Math.round(w*dpr);layer.height=Math.round(h*dpr)});
+  ctx.setTransform(dpr,0,0,dpr,0,0);backCtx.setTransform(dpr,0,0,dpr,0,0);
  };
  resize();if(window.ResizeObserver){new ResizeObserver(resize).observe(stage)}else window.addEventListener("resize",resize);
  const rad=n=>n*Math.PI/180;
- // Fit the complete outermost orbital plane inside the available stage with a small safety margin.
- const maxOrbitRadius=Math.max(...defs.map(item=>item.radius));
- const orbitScale=Math.min(1,.455/(.425*maxOrbitRadius*1.16));
+ // Orbit radii are normalized to the resized globe: every ring clears the Earth silhouette
+ // and the full family remains within the orbital stage.
+ const minClass=Math.min(...defs.map(item=>item.radius)),maxClass=Math.max(...defs.map(item=>item.radius));
  function project(theta,item){
-  const rr=Math.min(w,h)*.425*orbitScale*item.radius;
+  const earthRadius=Math.min(w,h)*.31;
+  const ringFactor=1.08+((item.radius-minClass)/(maxClass-minClass||1))*.30;
+  const rr=earthRadius*ringFactor;
   let x=rr*Math.cos(theta),y=rr*Math.sin(theta),z=0;
   const inc=rad(item.inclination),node=rad(item.node);
   const yi=y*Math.cos(inc)-z*Math.sin(inc),zi=y*Math.sin(inc)+z*Math.cos(inc);y=yi;z=zi;
@@ -406,38 +411,30 @@ function renderInteractiveOrbit(d){
   const count=Number(d.counts[item.key]||0),n=count?Math.max(5,Math.min(34,Math.round(count/total*sampleTotal/5))):0;
   return Array.from({length:n},(_,j)=>({angle:(j*2.399963229728653+index*1.71)%(Math.PI*2),speed:item.speed*(.82+(j%7)*.055),size:item.key==="leo"?1.8:2.15,alpha:.55+((j*17)%40)/100}));
  });
- function earthOccludes(p){
-  // Camera-facing hemisphere has negative z. Hide only far-side geometry
-  // while it passes behind the opaque Earth disc; near-side arcs stay visible.
-  const earthRadius=Math.min(w,h)*.435;
-  const dx=p.x-w/2,dy=p.y-h/2;
-  return p.z>=0 && Math.hypot(dx,dy)<earthRadius;
- }
  function drawOrbit(item){
-  const segments=360;
+  const segments=480;
   for(let k=0;k<segments;k++){
    const a1=k/segments*Math.PI*2,a2=(k+1)/segments*Math.PI*2;
    const p1=project(a1,item),p2=project(a2,item),pm=project((a1+a2)/2,item);
-   if(earthOccludes(pm))continue;
-   const front=pm.z<0;
-   ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
-   ctx.strokeStyle=item.color;ctx.globalAlpha=front?.58:.34;ctx.lineWidth=front?1.45:1.15;ctx.stroke();
+   const layer=pm.z>=0?backCtx:ctx;
+   layer.beginPath();layer.moveTo(p1.x,p1.y);layer.lineTo(p2.x,p2.y);
+   layer.strokeStyle=item.color;layer.globalAlpha=pm.z<0?.62:.42;layer.lineWidth=pm.z<0?1.5:1.15;layer.stroke();
   }
-  ctx.globalAlpha=1;
+  ctx.globalAlpha=1;backCtx.globalAlpha=1;
  }
  function frame(now){
   if(!paused&&last)elapsed+=(now-last)/1000;last=now;
-  ctx.clearRect(0,0,w,h);hits=[];
+  ctx.clearRect(0,0,w,h);backCtx.clearRect(0,0,w,h);hits=[];
   defs.forEach((item,index)=>{
    if(!visible[item.key])return;
    drawOrbit(item);
    objects[index].forEach(obj=>{
     if(!paused)obj.angle=(obj.angle+obj.speed*(now/1000-last/1000+0.016))%(Math.PI*2);
     const p=project(obj.angle,item);
-    if(earthOccludes(p))return;
     hits.push({x:p.x,y:p.y,item,obj});
-    ctx.beginPath();ctx.arc(p.x,p.y,obj.size*p.scale,0,Math.PI*2);
-    ctx.fillStyle=item.color;ctx.globalAlpha=obj.alpha;ctx.shadowColor=item.color;ctx.shadowBlur=7;ctx.fill();ctx.shadowBlur=0;
+    const particleCtx=p.z>=0?backCtx:ctx;
+    particleCtx.beginPath();particleCtx.arc(p.x,p.y,obj.size*p.scale,0,Math.PI*2);
+    particleCtx.fillStyle=item.color;particleCtx.globalAlpha=obj.alpha;particleCtx.shadowColor=item.color;particleCtx.shadowBlur=7;particleCtx.fill();particleCtx.shadowBlur=0;
    });
   });
   ctx.globalAlpha=1;
