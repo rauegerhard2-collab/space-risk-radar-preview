@@ -406,13 +406,22 @@ function renderInteractiveOrbit(d){
   const count=Number(d.counts[item.key]||0),n=count?Math.max(5,Math.min(34,Math.round(count/total*sampleTotal/5))):0;
   return Array.from({length:n},(_,j)=>({angle:(j*2.399963229728653+index*1.71)%(Math.PI*2),speed:item.speed*(.82+(j%7)*.055),size:item.key==="leo"?1.8:2.15,alpha:.55+((j*17)%40)/100}));
  });
+ function earthOccludes(p){
+  // Camera-facing hemisphere has negative z. Hide only far-side geometry
+  // while it passes behind the opaque Earth disc; near-side arcs stay visible.
+  const earthRadius=Math.min(w,h)*.435;
+  const dx=p.x-w/2,dy=p.y-h/2;
+  return p.z>=0 && Math.hypot(dx,dy)<earthRadius;
+ }
  function drawOrbit(item){
-  const segments=180;
+  const segments=360;
   for(let k=0;k<segments;k++){
-   const p1=project(k/segments*Math.PI*2,item),p2=project((k+1)/segments*Math.PI*2,item);
-   const front=(p1.z+p2.z)/2<0;
+   const a1=k/segments*Math.PI*2,a2=(k+1)/segments*Math.PI*2;
+   const p1=project(a1,item),p2=project(a2,item),pm=project((a1+a2)/2,item);
+   if(earthOccludes(pm))continue;
+   const front=pm.z<0;
    ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
-   ctx.strokeStyle=item.color;ctx.globalAlpha=front?.22:.58;ctx.lineWidth=front?1.05:1.55;ctx.stroke();
+   ctx.strokeStyle=item.color;ctx.globalAlpha=front?.58:.34;ctx.lineWidth=front?1.45:1.15;ctx.stroke();
   }
   ctx.globalAlpha=1;
  }
@@ -424,7 +433,9 @@ function renderInteractiveOrbit(d){
    drawOrbit(item);
    objects[index].forEach(obj=>{
     if(!paused)obj.angle=(obj.angle+obj.speed*(now/1000-last/1000+0.016))%(Math.PI*2);
-    const p=project(obj.angle,item);hits.push({x:p.x,y:p.y,item,obj});
+    const p=project(obj.angle,item);
+    if(earthOccludes(p))return;
+    hits.push({x:p.x,y:p.y,item,obj});
     ctx.beginPath();ctx.arc(p.x,p.y,obj.size*p.scale,0,Math.PI*2);
     ctx.fillStyle=item.color;ctx.globalAlpha=obj.alpha;ctx.shadowColor=item.color;ctx.shadowBlur=7;ctx.fill();ctx.shadowBlur=0;
    });
