@@ -135,7 +135,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
    <svg id="orbit-globe" viewBox="0 0 1000 900" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
 <title id="orbit-svg-title">Fotorealistische Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
 <desc id="orbit-svg-desc">Animiertes, fotorealistisches GIF mit rotierender Erde, Atmosphäre und Sternenhimmel. Darüber werden interaktive Stichprobenpunkte aus der qualitätsgeprüften CelesTrak-Orbitverteilung eingeblendet. Die Punkte zeigen Klassenanteile, keine realen Objektpositionen.</desc>
-<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="190" y="140" width="620" height="620" preserveAspectRatio="xMidYMid meet"/>
+<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="220" y="170" width="560" height="560" preserveAspectRatio="xMidYMid meet"/>
 <g id="orbit-points"></g>
 </svg>
 <canvas id="orbit-3d-canvas" class="orbit-3d-canvas" aria-label="Schematische dreidimensionale Orbitbahnen mit bewegten Satelliten- und Trümmerpartikeln"></canvas>
@@ -394,8 +394,8 @@ function renderInteractiveOrbit(d){
  // and the full family remains within the orbital stage.
  const minClass=Math.min(...defs.map(item=>item.radius)),maxClass=Math.max(...defs.map(item=>item.radius));
  function project(theta,item){
-  const earthRadius=Math.min(w,h)*.344;
-  const ringFactor=1.055+((item.radius-minClass)/(maxClass-minClass||1))*.265;
+  const earthRadius=Math.min(w,h)*.31;
+  const ringFactor=1.08+((item.radius-minClass)/(maxClass-minClass||1))*.30;
   const rr=earthRadius*ringFactor;
   let x=rr*Math.cos(theta),y=rr*Math.sin(theta),z=0;
   const inc=rad(item.inclination),node=rad(item.node);
