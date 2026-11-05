@@ -394,8 +394,9 @@ function renderInteractiveOrbit(d){
  // and the full family remains within the orbital stage.
  const minClass=Math.min(...defs.map(item=>item.radius)),maxClass=Math.max(...defs.map(item=>item.radius));
  function project(theta,item){
-  const earthRadius=Math.min(w,h)*.31;
-  const ringFactor=1.08+((item.radius-minClass)/(maxClass-minClass||1))*.30;
+  // Keep every orbit comfortably inside the starfield viewport, including perspective expansion.
+  const earthRadius=Math.min(w,h)*.235;
+  const ringFactor=1.05+((item.radius-minClass)/(maxClass-minClass||1))*.22;
   const rr=earthRadius*ringFactor;
   let x=rr*Math.cos(theta),y=rr*Math.sin(theta),z=0;
   const inc=rad(item.inclination),node=rad(item.node);
@@ -425,6 +426,9 @@ function renderInteractiveOrbit(d){
  function frame(now){
   if(!paused&&last)elapsed+=(now-last)/1000;last=now;
   ctx.clearRect(0,0,w,h);backCtx.clearRect(0,0,w,h);hits=[];
+  // Explicit canvas clipping is a second safeguard in addition to the stage's overflow:hidden.
+  ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();
+  backCtx.save();backCtx.beginPath();backCtx.rect(0,0,w,h);backCtx.clip();
   defs.forEach((item,index)=>{
    if(!visible[item.key])return;
    drawOrbit(item);
@@ -437,7 +441,8 @@ function renderInteractiveOrbit(d){
     particleCtx.fillStyle=item.color;particleCtx.globalAlpha=obj.alpha;particleCtx.shadowColor=item.color;particleCtx.shadowBlur=7;particleCtx.fill();particleCtx.shadowBlur=0;
    });
   });
-  ctx.globalAlpha=1;
+  ctx.globalAlpha=1;backCtx.globalAlpha=1;
+  ctx.restore();backCtx.restore();
   // Subtle depth cue: front-facing orbital arcs are brighter; the GIF remains untouched underneath.
   raf=requestAnimationFrame(frame);
  }
