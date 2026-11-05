@@ -428,7 +428,8 @@ async function loadOrbitDistribution(){
   document.getElementById("orbit-total").textContent=d.record_count.toLocaleString("de-DE");
   document.getElementById("orbit-classified").textContent=d.classified_count.toLocaleString("de-DE");
   document.getElementById("orbit-retrieved").textContent=new Date(d.retrieved_at_utc).toLocaleString("de-DE",{timeZone:"UTC"});
-  renderInteractiveOrbit(d);\n  const q=d.quality||{};
+  renderInteractiveOrbit(d);
+  const q=d.quality||{};
   const epochNote="Verwendete Bahnelemente-Epochen: "+(d.source_epoch_min_utc||"nicht ausgewiesen")+" bis "+(d.source_epoch_max_utc||"nicht ausgewiesen")+". Abruf: "+d.retrieved_at_utc+".";
   const rawMax=d.raw_source_epoch_max_utc||"nicht ausgewiesen";
   const qualityNote="Rohdaten: "+Number(d.raw_record_count??d.record_count).toLocaleString("de-DE")+" · ausgeschlossen (zukünftige Epochen > "+Number(q.future_epoch_tolerance_hours??6)+" h): "+Number(q.excluded_future_epoch_count||0).toLocaleString("de-DE")+" · fehlende/ungültige Epochen: "+Number(q.missing_or_invalid_epoch_count||0).toLocaleString("de-DE")+" · älter als "+Number(q.stale_epoch_threshold_days??30)+" Tage: "+Number(q.stale_epoch_count||0).toLocaleString("de-DE")+". Rohdaten-Maximum: "+rawMax+".";
