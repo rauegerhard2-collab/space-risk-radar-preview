@@ -404,7 +404,9 @@ function renderInteractiveOrbit(d){
  const geometry=document.getElementById("orbit-points");
  document.getElementById("orbit-pause").onclick=e=>{const paused=geometry.classList.toggle("orbit-spin");e.currentTarget.textContent=paused?"Bewegung pausieren":"Bewegung aktivieren";};
  detail.innerHTML="<b>"+fmt(total)+" qualitätsgeprüfte Datensätze</b><br>"+fmt(d.raw_record_count??total)+" Rohdatensätze abgerufen · "+fmt(d.quality?.excluded_future_epoch_count||0)+" zukünftige Epoch-Datensätze ausgeschlossen.<br>Wähle eine Klasse für Details.";
-}\n\nasync function loadOrbitDistribution(){
+}
+
+async function loadOrbitDistribution(){
  const status=document.getElementById("orbit-data-status"),bars=document.getElementById("orbit-bars");
  try{
   const response=await fetch("data/orbit-distribution/latest.json?ts="+Date.now(),{cache:"no-store"});
