@@ -101,7 +101,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 .orbit-dot:hover{stroke:#fff;stroke-width:1.8;filter:drop-shadow(0 0 4px currentColor)}
 .orbit-hidden{display:none}
 @media(max-width:850px){.orbit-viz{grid-template-columns:1fr}.orbit-stage,.orbit-stage svg{min-height:330px}}
-@media(prefers-reduced-motion:no-preference){.orbit-spin{transform-origin:500px 350px;animation:orbitSlowSpin 100s linear infinite}@keyframes orbitSlowSpin{to{transform:rotate(360deg)}}}
+@media(prefers-reduced-motion:no-preference){.orbit-spin{transform-origin:500px 450px;animation:orbitSlowSpin 100s linear infinite}@keyframes orbitSlowSpin{to{transform:rotate(360deg)}}}
 </style>
 </head>
 <body>
@@ -124,10 +124,10 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
  <div class="panel-head"><div><div class="section-kicker">01 / Orbital environment</div><h2>Die Erde im orbitalen Umfeld</h2><div class="sub">Interaktive, datenbasierte Darstellung der qualitätsgeprüften CelesTrak-Orbitverteilung</div></div><span class="badge amber" id="orbit-data-status-top">Daten werden geprüft …</span></div>
  <div class="orbit-viz" aria-label="Interaktive schematische Darstellung der Orbitklassen">
   <div class="orbit-stage">
-   <svg id="orbit-globe" viewBox="0 0 1000 700" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
+   <svg id="orbit-globe" viewBox="0 0 1000 900" role="img" aria-labelledby="orbit-svg-title orbit-svg-desc" preserveAspectRatio="xMidYMid meet">
 <title id="orbit-svg-title">Fotorealistische Erde im orbitalen Umfeld – interaktive Datenvisualisierung</title>
 <desc id="orbit-svg-desc">Animiertes, fotorealistisches GIF mit rotierender Erde, Atmosphäre und Sternenhimmel. Darüber werden interaktive Stichprobenpunkte aus der qualitätsgeprüften CelesTrak-Orbitverteilung eingeblendet. Die Punkte zeigen Klassenanteile, keine realen Objektpositionen.</desc>
-<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="175" y="25" width="650" height="650" preserveAspectRatio="xMidYMid meet"/>
+<image id="earth-rotation" href="assets/earth_rotation_nasa_extra_bright_1oceans.gif" x="50" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"/>
 <g id="orbit-points"></g>
 </svg>
    <div style="position:absolute;left:13px;top:12px;font-size:10px;color:#c3d7eb;background:#071321bb;padding:6px 8px;border-radius:6px">ROTIERENDE FOTOREALISTISCHE ERDE · DATENPUNKTE INTERAKTIV ÜBERLAGERT</div>
@@ -383,7 +383,7 @@ function renderInteractiveOrbit(d){
   for(let j=0;j<n;j++){
    const angle=(j*2.399963229728653+index*1.71),radius=Math.sqrt((j+.5)/Math.max(n,1));
    const ex=item.rx*radius*Math.cos(angle),ey=item.ry*radius*Math.sin(angle);
-   const rad=item.tilt*Math.PI/180,x=500+ex*Math.cos(rad)-ey*Math.sin(rad),y=350+ex*Math.sin(rad)+ey*Math.cos(rad);
+   const rad=item.tilt*Math.PI/180,x=500+ex*Math.cos(rad)-ey*Math.sin(rad),y=450+ex*Math.sin(rad)+ey*Math.cos(rad);
    const dot=document.createElementNS("http://www.w3.org/2000/svg","circle");
    dot.setAttribute("cx",x.toFixed(2));dot.setAttribute("cy",y.toFixed(2));dot.setAttribute("r",item.key==="leo"?"2.05":item.key==="meo"?"2.4":"2.7");
    dot.setAttribute("fill",item.color);dot.setAttribute("class","orbit-dot orbit-class-"+item.key);dot.dataset.orbitKey=item.key;
