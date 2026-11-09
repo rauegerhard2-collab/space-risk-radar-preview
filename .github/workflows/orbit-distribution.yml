@@ -1,53 +1,55 @@
-name: Orbit distribution pilot
+name: Daily data staging
 
 on:
-  push:
-    paths:
-      - "scripts/build_orbit_distribution.py"
-      - ".github/workflows/orbit-distribution.yml"
-  workflow_dispatch:
   schedule:
-    - cron: "41 6 * * *"
+    - cron: "17 6 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: orbit-distribution-pilot
+  group: space-risk-radar-data-staging
   cancel-in-progress: false
 
 jobs:
-  validate:
+  refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run offline classification tests
-        run: python scripts/build_orbit_distribution.py --check
-      - name: Compile Python
-        run: python -m py_compile scripts/build_orbit_distribution.py
-
-  update-derived-summary:
-    needs: validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Retrieve and summarize CelesTrak ACTIVE group
-        run: python scripts/build_orbit_distribution.py
-      - name: Commit derived summary only when changed
+      - name: Prepare isolated staging branch
         run: |
-          git add data/orbit-distribution/latest.json
+          git fetch origin main
+          if git ls-remote --exit-code --heads origin data-staging >/dev/null 2>&1; then
+            git fetch origin data-staging
+            git checkout -B data-staging origin/data-staging
+          else
+            git checkout -B data-staging origin/main
+          fi
+      - name: Validate orbit distribution code
+        run: python scripts/build_orbit_distribution.py --check
+      - name: Refresh orbit distribution
+        run: python scripts/build_orbit_distribution.py
+      - name: Compile refresh scripts
+        run: python -m py_compile scripts/build_orbit_distribution.py scripts/refresh_public_feeds.py
+      - name: Refresh CelesTrak and OrbitalWiki snapshots
+        run: python scripts/refresh_public_feeds.py
+      - name: Commit staging data only when changed
+        run: |
+          git add data/orbit-distribution/latest.json data/orbital/latest.json data/orbital/orbitalwiki-events/latest.json data/orbital/orbitalwiki-launches/latest.json data/source-log.jsonl
           if git diff --cached --quiet; then
-            echo "No summary changes (or retrieval skipped by refresh guard)."
+            echo "No validated data changes to stage."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update derived orbit distribution summary"
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push
+          git commit -m "Stage daily orbital data refresh"
+          git push origin data-staging

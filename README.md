@@ -30,15 +30,16 @@ The project is independent and does not represent Deutsche Telekom AG, ESA or an
 
 ## Automated data retrieval
 
-The daily workflow now follows the branch on which it is dispatched and no longer targets the retired `feature/dashboard-v1-1` branch.
+Daily retrieval is staged on the isolated `data-staging` branch and does not publish the Preview site. A weekly pull request proposes validated snapshots for review; merging that PR updates Preview Pages. The production repository is not connected to this process.
 
 - CelesTrak STATIONS OMM is the required orbital-element pilot.
+- CelesTrak ACTIVE orbit distribution is refreshed daily as a derived summary.
 - OrbitalWiki catalogue events and launch metadata are optional enrichment feeds.
 - OrbitalWiki's elements endpoint is excluded because it republishes CelesTrak-derived orbital elements.
 - Orbital Watch Collision Watch is documented as a public CDM reference, but is not scraped without a stable supported API/export contract.
 - SatNOGS DB, ESA DISCOSweb and Space-Track remain candidates subject to data-type, access, licensing and redistribution review.
 
-See [feed assessment](docs/FEED_ASSESSMENT.md), [data sources](docs/DATA_SOURCES.md) and [orbital archive notes](data/orbital/README.md).
+See [automated refresh and publication](docs/AUTOMATED_DATA_REFRESH.md), [feed assessment](docs/FEED_ASSESSMENT.md) and [data sources](docs/DATA_SOURCES.md).
 
 ## Development
 
