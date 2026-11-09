@@ -13,27 +13,13 @@ jobs:
   open-review:
     runs-on: ubuntu-latest
     steps:
-      - name: Create or update weekly review pull request
+      - name: Create weekly review pull request when staging differs
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! gh pr list --base main --head data-staging --state open --json number --jq 'length' | grep -q '^0$'; then
-            echo "A data-staging review PR is already open."
-          else
-            gh pr create \
-              --base main \
-              --head data-staging \
-              --title "Weekly orbital data refresh review" \
-              --body "## Weekly data refresh
-
-This pull request proposes the latest validated public-source snapshots from the isolated `data-staging` branch.
-
-### Review checklist
-- [ ] Retrieval timestamps and provider timestamps are clearly distinguished.
-- [ ] Source log contains successful and failed retrieval attempts.
-- [ ] No empty or malformed snapshot replaced a last-known-good file.
-- [ ] CelesTrak STATIONS scope and OrbitalWiki catalogue limitations remain visible.
-- [ ] Changes are limited to data snapshots; no dashboard code or production repository is changed.
-
-Merge only after reviewing the data and source log. Merging updates the Preview Pages site; the public production repository is not connected to this workflow."
+          OPEN_COUNT=$(gh pr list --base main --head data-staging --state open --json number --jq 'length')
+          if [ "$OPEN_COUNT" -gt 0 ]; then
+            echo "A weekly data review PR is already open."
+            exit 0
           fi
+          gh pr create --base main --head data-staging --title "Weekly orbital data refresh review" --body "Please review the staged public-source snapshots, retrieval timestamps, source log and data-quality gates. Merge only after review. This publishes to Preview Pages only; production is not connected."
