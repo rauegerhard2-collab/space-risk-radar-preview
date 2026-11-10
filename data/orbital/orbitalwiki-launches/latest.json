@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-launches-2026-11-03",
-  "retrieved_at": "2026-11-03T11:26:47+00:00",
+  "dataset_id": "orbitalwiki-launches-2026-11-10",
+  "retrieved_at": "2026-11-10T07:27:04+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/launches",
@@ -9,11 +9,47 @@
   "record_type": "launch catalogue metadata; not orbital ephemerides",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-03T11:26:49.900Z",
-    "count": 1998,
-    "newest_launch_date": "2026-10-30",
+    "generated_at": "2026-11-10T07:27:05.591Z",
+    "count": 2006,
+    "newest_launch_date": "2026-11-07",
     "note": "Launches derived from the COSPAR international designator prefix shared by their objects. Vehicle and launch site are not carried, because this catalog does not hold them.",
     "data": [
+      {
+        "launch_id": "2026-252",
+        "object_count": 1,
+        "earliest_launch_date": "2026-11-07",
+        "url": "https://www.orbitalwiki.com/launches/2026-252"
+      },
+      {
+        "launch_id": "2026-250",
+        "object_count": 4,
+        "earliest_launch_date": "2026-11-06",
+        "url": "https://www.orbitalwiki.com/launches/2026-250"
+      },
+      {
+        "launch_id": "2026-249",
+        "object_count": 3,
+        "earliest_launch_date": "2026-11-05",
+        "url": "https://www.orbitalwiki.com/launches/2026-249"
+      },
+      {
+        "launch_id": "2026-248",
+        "object_count": 18,
+        "earliest_launch_date": "2026-11-03",
+        "url": "https://www.orbitalwiki.com/launches/2026-248"
+      },
+      {
+        "launch_id": "2026-247",
+        "object_count": 1,
+        "earliest_launch_date": "2026-11-02",
+        "url": "https://www.orbitalwiki.com/launches/2026-247"
+      },
+      {
+        "launch_id": "2026-246",
+        "object_count": 27,
+        "earliest_launch_date": "2026-10-31",
+        "url": "https://www.orbitalwiki.com/launches/2026-246"
+      },
       {
         "launch_id": "2026-245",
         "object_count": 1,
@@ -65,7 +101,7 @@
       {
         "launch_id": "2026-237",
         "object_count": 31,
-        "earliest_launch_date": "2026-10-19",
+        "earliest_launch_date": "2026-10-20",
         "url": "https://www.orbitalwiki.com/launches/2026-237"
       },
       {
@@ -106,7 +142,7 @@
       },
       {
         "launch_id": "2026-227",
-        "object_count": 96,
+        "object_count": 100,
         "earliest_launch_date": "2026-10-01",
         "url": "https://www.orbitalwiki.com/launches/2026-227"
       },
@@ -313,6 +349,12 @@
         "object_count": 1,
         "earliest_launch_date": "2026-08-18",
         "url": "https://www.orbitalwiki.com/launches/2026-189"
+      },
+      {
+        "launch_id": "2026-188",
+        "object_count": 2,
+        "earliest_launch_date": "2026-08-17",
+        "url": "https://www.orbitalwiki.com/launches/2026-188"
       },
       {
         "launch_id": "2026-187",
@@ -1635,6 +1677,12 @@
         "url": "https://www.orbitalwiki.com/launches/2025-270"
       },
       {
+        "launch_id": "2025-269",
+        "object_count": 1,
+        "earliest_launch_date": "2025-11-21",
+        "url": "https://www.orbitalwiki.com/launches/2025-269"
+      },
+      {
         "launch_id": "2025-268",
         "object_count": 29,
         "earliest_launch_date": "2025-11-21",
@@ -1780,7 +1828,7 @@
       },
       {
         "launch_id": "2025-243",
-        "object_count": 27,
+        "object_count": 28,
         "earliest_launch_date": "2025-10-26",
         "url": "https://www.orbitalwiki.com/launches/2025-243"
       },
@@ -5764,7 +5812,7 @@
       },
       {
         "launch_id": "2022-089",
-        "object_count": 1,
+        "object_count": 2,
         "earliest_launch_date": "2022-08-01",
         "url": "https://www.orbitalwiki.com/launches/2022-089"
       },
@@ -12014,5 +12062,10 @@
       "attribution": "OrbitalWiki (orbitalwiki.com), data from CelesTrak (CelesTrak usage policy; reuse licence not stated); GCAT/McDowell (CC-BY 4.0); Wikidata (CC0 (public domain)); SatNOGS DB (CC BY-SA 4.0)",
       "disclaimer": "Orbital data is approximate and not for operational use."
     }
-  }
+  },
+  "limitations": [
+    "OrbitalWiki is a complementary catalogue source, not an independent space-surveillance sensor.",
+    "API catalogue history is limited; a prolonged polling gap may not be recoverable.",
+    "Provider event timestamps and generated_at are not the same as this retrieval timestamp."
+  ]
 }
