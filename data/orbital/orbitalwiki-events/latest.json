@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-10",
-  "retrieved_at": "2026-11-10T07:27:02+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-11",
+  "retrieved_at": "2026-11-11T07:29:54+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,91 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-10T07:27:04.155Z",
+    "generated_at": "2026-11-11T07:29:54.601Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "236e2ba7-1088-43a2-ad06-79b065e2a1f5",
+        "type": "object_added",
+        "noradId": "101320",
+        "title": "New object catalogued: GUOWANG 29 OBJECT A",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT A.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101320"
+      },
+      {
+        "id": "7234a8a5-d6c0-409c-b80d-6719d42dcce9",
+        "type": "object_added",
+        "noradId": "101322",
+        "title": "New object catalogued: GUOWANG 29 OBJECT C",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT C.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101322"
+      },
+      {
+        "id": "ddaf5849-9f02-4b03-8c85-ae34ac2d0f3a",
+        "type": "object_added",
+        "noradId": "101323",
+        "title": "New object catalogued: GUOWANG 29 OBJECT D",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT D.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101323"
+      },
+      {
+        "id": "5a86cedb-673a-413b-8f9a-ef75e18c34f3",
+        "type": "object_added",
+        "noradId": "101324",
+        "title": "New object catalogued: GUOWANG 29 OBJECT E",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT E.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101324"
+      },
+      {
+        "id": "f33bf4d2-ed33-4a26-9e79-574f8284459c",
+        "type": "object_added",
+        "noradId": "101325",
+        "title": "New object catalogued: GUOWANG 29 OBJECT F",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT F.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101325"
+      },
+      {
+        "id": "7ad53ab6-dfcd-419a-901d-36573e7f2336",
+        "type": "object_added",
+        "noradId": "101326",
+        "title": "New object catalogued: GUOWANG 29 OBJECT G",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT G.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101326"
+      },
+      {
+        "id": "37bf3fdd-6fc8-4a4b-97a5-5a269a1e3ad0",
+        "type": "object_added",
+        "noradId": "101327",
+        "title": "New object catalogued: GUOWANG 29 OBJECT H",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT H.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101327"
+      },
+      {
+        "id": "36b66e27-feaf-4cd2-97d7-ded49b58370a",
+        "type": "object_added",
+        "noradId": "101328",
+        "title": "New object catalogued: GUOWANG 29 OBJECT J",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT J.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101328"
+      },
+      {
+        "id": "6b4baad8-cfb7-40c9-923c-5c0c7b8b507b",
+        "type": "object_added",
+        "noradId": "101329",
+        "title": "New object catalogued: GUOWANG 29 OBJECT K",
+        "detail": "First appeared in the catalog as GUOWANG 29 OBJECT K.",
+        "detectedAt": "2026-11-10T14:00:34.705918+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101329"
+      },
       {
         "id": "ac2fe6da-4ac8-4c1e-8f94-b22392403a66",
         "type": "object_added",
@@ -831,94 +912,13 @@
         "detail": "First appeared in the catalog as STARLINK-38483.",
         "detectedAt": "2026-10-30T11:54:41.146691+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101216"
-      },
-      {
-        "id": "80863ca3-d8d5-4ea5-b19c-34395238b51d",
-        "type": "object_added",
-        "noradId": "101217",
-        "title": "New object catalogued: STARLINK-38146",
-        "detail": "First appeared in the catalog as STARLINK-38146.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101217"
-      },
-      {
-        "id": "0fea4242-eb77-4b99-b884-1283cd1b5cde",
-        "type": "object_added",
-        "noradId": "101218",
-        "title": "New object catalogued: STARLINK-38153",
-        "detail": "First appeared in the catalog as STARLINK-38153.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101218"
-      },
-      {
-        "id": "08cadd17-c7fa-4ad1-a61e-4b79402ba6bb",
-        "type": "object_added",
-        "noradId": "101219",
-        "title": "New object catalogued: STARLINK-38351",
-        "detail": "First appeared in the catalog as STARLINK-38351.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101219"
-      },
-      {
-        "id": "cf20553e-6bc8-45ad-a2aa-4012a2942a68",
-        "type": "object_added",
-        "noradId": "101220",
-        "title": "New object catalogued: STARLINK-38480",
-        "detail": "First appeared in the catalog as STARLINK-38480.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101220"
-      },
-      {
-        "id": "4f74fc5d-c7df-42c8-a25c-cc148cd8e2ca",
-        "type": "object_added",
-        "noradId": "101221",
-        "title": "New object catalogued: STARLINK-38491",
-        "detail": "First appeared in the catalog as STARLINK-38491.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101221"
-      },
-      {
-        "id": "d6a88523-b6c5-4dd1-bf51-e0ae82353768",
-        "type": "object_added",
-        "noradId": "101222",
-        "title": "New object catalogued: STARLINK-38489",
-        "detail": "First appeared in the catalog as STARLINK-38489.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101222"
-      },
-      {
-        "id": "fe29d562-9842-4186-bd45-d692eb81fd7d",
-        "type": "object_added",
-        "noradId": "101223",
-        "title": "New object catalogued: STARLINK-38481",
-        "detail": "First appeared in the catalog as STARLINK-38481.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101223"
-      },
-      {
-        "id": "db68fcfd-8503-4b2a-938f-4c351055f9c5",
-        "type": "object_added",
-        "noradId": "101224",
-        "title": "New object catalogued: STARLINK-38488",
-        "detail": "First appeared in the catalog as STARLINK-38488.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101224"
-      },
-      {
-        "id": "274dcaa9-4aae-4a67-bedd-90153ec6e7e1",
-        "type": "object_added",
-        "noradId": "101225",
-        "title": "New object catalogued: STARLINK-38486",
-        "detail": "First appeared in the catalog as STARLINK-38486.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101225"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-09T03:48:55.476393+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-09T03%3A48%3A55.476393%2B00%3A00",
+      "latest_detected_at": "2026-11-10T14:00:34.705918+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-10T14%3A00%3A34.705918%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
