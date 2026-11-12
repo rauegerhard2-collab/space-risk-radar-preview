@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-11",
-  "retrieved_at": "2026-11-11T07:29:54+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-12",
+  "retrieved_at": "2026-11-12T07:34:38+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,64 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-11T07:29:54.601Z",
+    "generated_at": "2026-11-12T07:34:40.679Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "69e808a0-c621-41d2-82f5-213f41b3827d",
+        "type": "object_added",
+        "noradId": "101321",
+        "title": "New object catalogued: HULIANWANG DIGUI 233",
+        "detail": "First appeared in the catalog as HULIANWANG DIGUI 233.",
+        "detectedAt": "2026-11-11T23:53:53.944189+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101321"
+      },
+      {
+        "id": "e93e746b-eae4-4e97-b6fb-74b61ca601e6",
+        "type": "object_added",
+        "noradId": "57481",
+        "title": "New object catalogued: DS-SAR",
+        "detail": "First appeared in the catalog as DS-SAR.",
+        "detectedAt": "2026-11-11T13:17:25.673058+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/57481"
+      },
+      {
+        "id": "b40f9047-0c8a-4d27-8b0a-00440c4c3e55",
+        "type": "orbit_changed",
+        "noradId": "100125",
+        "title": "Orbit changed: NORAD 100125",
+        "detail": "Orbit and period moved from HEO / 1030.1 min to HEO / 1060.0 min.",
+        "detectedAt": "2026-11-11T13:17:25.673058+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100125"
+      },
+      {
+        "id": "b5c3957d-a2b1-49b2-9473-bf566ba3843c",
+        "type": "orbit_changed",
+        "noradId": "100686",
+        "title": "Orbit changed: NORAD 100686",
+        "detail": "Orbit and period moved from LEO / 187.2 min to LEO / 191.4 min.",
+        "detectedAt": "2026-11-11T13:17:25.673058+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100686"
+      },
+      {
+        "id": "e2b83815-2f99-460f-9a52-ea119a212361",
+        "type": "orbit_changed",
+        "noradId": "100687",
+        "title": "Orbit changed: NORAD 100687",
+        "detail": "Orbit and period moved from LEO / 187.5 min to LEO / 191.7 min.",
+        "detectedAt": "2026-11-11T13:17:25.673058+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100687"
+      },
+      {
+        "id": "a153c67f-4d30-45bd-9036-cb761c3e749f",
+        "type": "orbit_changed",
+        "noradId": "100688",
+        "title": "Orbit changed: NORAD 100688",
+        "detail": "Orbit and period moved from LEO / 179.4 min to LEO / 194.4 min.",
+        "detectedAt": "2026-11-11T13:17:25.673058+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100688"
+      },
       {
         "id": "236e2ba7-1088-43a2-ad06-79b065e2a1f5",
         "type": "object_added",
@@ -858,67 +912,13 @@
         "detail": "First appeared in the catalog as STARLINK-38125.",
         "detectedAt": "2026-10-30T11:54:41.146691+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101210"
-      },
-      {
-        "id": "95adcf14-64e5-4efc-acb9-c61a24037aeb",
-        "type": "object_added",
-        "noradId": "101211",
-        "title": "New object catalogued: STARLINK-38340",
-        "detail": "First appeared in the catalog as STARLINK-38340.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101211"
-      },
-      {
-        "id": "73abbc9c-f296-4fef-9bce-638cfc4fbd27",
-        "type": "object_added",
-        "noradId": "101212",
-        "title": "New object catalogued: STARLINK-37678",
-        "detail": "First appeared in the catalog as STARLINK-37678.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101212"
-      },
-      {
-        "id": "7546d095-55c7-4193-8b96-3a27831dcf3f",
-        "type": "object_added",
-        "noradId": "101213",
-        "title": "New object catalogued: STARLINK-38181",
-        "detail": "First appeared in the catalog as STARLINK-38181.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101213"
-      },
-      {
-        "id": "f38347cb-7fcf-4a79-9401-ed0804e9a355",
-        "type": "object_added",
-        "noradId": "101214",
-        "title": "New object catalogued: STARLINK-38428",
-        "detail": "First appeared in the catalog as STARLINK-38428.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101214"
-      },
-      {
-        "id": "6e9a49fe-67cc-460f-96e6-9f53c4fb25a6",
-        "type": "object_added",
-        "noradId": "101215",
-        "title": "New object catalogued: STARLINK-38337",
-        "detail": "First appeared in the catalog as STARLINK-38337.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101215"
-      },
-      {
-        "id": "7b815f7b-5326-4714-92cf-923911b202c5",
-        "type": "object_added",
-        "noradId": "101216",
-        "title": "New object catalogued: STARLINK-38483",
-        "detail": "First appeared in the catalog as STARLINK-38483.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101216"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-10T14:00:34.705918+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-10T14%3A00%3A34.705918%2B00%3A00",
+      "latest_detected_at": "2026-11-11T23:53:53.944189+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-11T23%3A53%3A53.944189%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
