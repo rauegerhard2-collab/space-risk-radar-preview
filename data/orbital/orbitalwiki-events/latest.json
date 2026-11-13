@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-12",
-  "retrieved_at": "2026-11-12T07:34:38+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-13",
+  "retrieved_at": "2026-11-13T07:31:58+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,19 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-12T07:34:40.679Z",
+    "generated_at": "2026-11-13T07:31:59.757Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "9fb2bbf8-977d-4fce-9d4c-b1ad202cbc7d",
+        "type": "object_added",
+        "noradId": "101330",
+        "title": "New object catalogued: TANLUOZHE-1",
+        "detail": "First appeared in the catalog as TANLUOZHE-1.",
+        "detectedAt": "2026-11-13T04:17:09.371319+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101330"
+      },
       {
         "id": "69e808a0-c621-41d2-82f5-213f41b3827d",
         "type": "object_added",
@@ -903,22 +912,13 @@
         "detail": "First appeared in the catalog as STARLINK-38287.",
         "detectedAt": "2026-10-30T11:54:41.146691+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101209"
-      },
-      {
-        "id": "2b0d39a4-3903-444f-a933-4a470378dde9",
-        "type": "object_added",
-        "noradId": "101210",
-        "title": "New object catalogued: STARLINK-38125",
-        "detail": "First appeared in the catalog as STARLINK-38125.",
-        "detectedAt": "2026-10-30T11:54:41.146691+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101210"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-11T23:53:53.944189+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-11T23%3A53%3A53.944189%2B00%3A00",
+      "latest_detected_at": "2026-11-13T04:17:09.371319+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-13T04%3A17%3A09.371319%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
