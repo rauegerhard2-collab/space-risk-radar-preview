@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-14",
-  "retrieved_at": "2026-11-14T07:18:46+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-15",
+  "retrieved_at": "2026-11-15T07:21:05+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,7 +9,7 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-14T07:18:46.902Z",
+    "generated_at": "2026-11-15T07:21:05.540Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
