@@ -42,7 +42,7 @@ jobs:
           else
             git checkout -B data-staging origin/main
           fi
-          git checkout origin/main -- scripts/record_orbit_refresh.py
+          git checkout origin/main -- scripts/record_orbit_refresh.py scripts/validate_publication.py
 
       - name: Validate orbit distribution code
         id: self_test
@@ -57,7 +57,7 @@ jobs:
         id: record_active
         if: always() && steps.prepare.outcome == 'success'
         env:
-          ORBIT_OUTCOME: \${{ steps.orbit_refresh.outcome }}
+          ORBIT_OUTCOME: ${{ steps.orbit_refresh.outcome }}
         run: python scripts/record_orbit_refresh.py "$ORBIT_OUTCOME"
 
       - name: Compile refresh scripts
@@ -86,12 +86,12 @@ jobs:
       - name: Fail the run if a refresh, validation or staging commit failed
         if: always()
         env:
-          SELF_TEST: \${{ steps.self_test.outcome }}
-          ORBIT_REFRESH: \${{ steps.orbit_refresh.outcome }}
-          RECORD_ACTIVE: \${{ steps.record_active.outcome }}
-          COMPILE_SCRIPTS: \${{ steps.compile_scripts.outcome }}
-          PUBLIC_FEEDS: \${{ steps.public_feeds.outcome }}
-          COMMIT_STAGING: \${{ steps.commit_staging.outcome }}
+          SELF_TEST: ${{ steps.self_test.outcome }}
+          ORBIT_REFRESH: ${{ steps.orbit_refresh.outcome }}
+          RECORD_ACTIVE: ${{ steps.record_active.outcome }}
+          COMPILE_SCRIPTS: ${{ steps.compile_scripts.outcome }}
+          PUBLIC_FEEDS: ${{ steps.public_feeds.outcome }}
+          COMMIT_STAGING: ${{ steps.commit_staging.outcome }}
         run: |
           echo "self-test=$SELF_TEST orbit=$ORBIT_REFRESH active-log=$RECORD_ACTIVE compile=$COMPILE_SCRIPTS public-feeds=$PUBLIC_FEEDS staging-commit=$COMMIT_STAGING"
           for result in "$SELF_TEST" "$ORBIT_REFRESH" "$RECORD_ACTIVE" "$COMPILE_SCRIPTS" "$PUBLIC_FEEDS" "$COMMIT_STAGING"; do
