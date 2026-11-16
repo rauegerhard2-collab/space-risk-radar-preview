@@ -1,25 +1,97 @@
-name: Weekly data review PR
+name: Weekly validated data publication
 
 on:
   schedule:
     - cron: "30 8 * * 1"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/weekly-data-review.yml"
 
 permissions:
-  contents: read
-  pull-requests: write
+  contents: write
+  actions: write
+
+concurrency:
+  group: space-risk-radar-weekly-publication
+  cancel-in-progress: false
 
 jobs:
-  open-review:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Create weekly review pull request when staging differs
+      - name: Checkout Preview main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Load only the staged data files
+        run: |
+          git fetch origin data-staging
+          git checkout origin/data-staging -- \
+            data/source-log.jsonl \
+            data/orbit-distribution/latest.json \
+            data/orbital/latest.json \
+            data/orbital/orbitalwiki-events/latest.json \
+            data/orbital/orbitalwiki-launches/latest.json
+
+      - name: Run orbit-distribution self-test
+        run: python scripts/build_orbit_distribution.py --check
+
+      - name: Compile publication validator
+        run: python -m py_compile scripts/validate_publication.py
+
+      - name: Validate all four feeds before publication
+        run: python scripts/validate_publication.py --max-age-hours 48
+
+      - name: Publish validated data to Preview main
+        id: publish
+        run: |
+          git add \
+            data/source-log.jsonl \
+            data/orbit-distribution/latest.json \
+            data/orbital/latest.json \
+            data/orbital/orbitalwiki-events/latest.json \
+            data/orbital/orbitalwiki-launches/latest.json
+          if git diff --cached --quiet; then
+            echo "No new staged data; Preview remains unchanged."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Publish validated weekly orbital data"
+          git push origin main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy and verify Preview Pages
+        if: steps.publish.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          OPEN_COUNT=$(gh pr list --base main --head data-staging --state open --json number --jq 'length')
-          if [ "$OPEN_COUNT" -gt 0 ]; then
-            echo "A weekly data review PR is already open."
-            exit 0
-          fi
-          gh pr create --base main --head data-staging --title "Weekly orbital data refresh review" --body "Please review the staged public-source snapshots, retrieval timestamps, source log and data-quality gates. Merge only after review. This publishes to Preview Pages only; production is not connected."
+          gh workflow run deploy-preview.yml --ref main
+          for attempt in $(seq 1 60); do
+            run_json=$(gh run list --workflow deploy-preview.yml --branch main --event workflow_dispatch --limit 1 --json databaseId,status,conclusion,url)
+            run_id=$(echo "$run_json" | jq -r '.[0].databaseId // empty')
+            run_status=$(echo "$run_json" | jq -r '.[0].status // empty')
+            run_conclusion=$(echo "$run_json" | jq -r '.[0].conclusion // empty')
+            if [ -n "$run_id" ] && [ "$run_status" = "completed" ]; then
+              echo "$run_json"
+              if [ "$run_conclusion" = "success" ]; then
+                echo "Preview Pages deployment succeeded (run $run_id)."
+                exit 0
+              fi
+              echo "Preview Pages deployment failed (run $run_id)." >&2
+              exit 1
+            fi
+            sleep 10
+          done
+          echo "Timed out waiting for Preview Pages deployment." >&2
+          exit 1
