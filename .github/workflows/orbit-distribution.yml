@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: "17 6 * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/orbit-distribution.yml"
 
 permissions:
   contents: write
@@ -17,15 +21,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
+        id: checkout
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Prepare isolated staging branch
+        id: prepare
         run: |
           git fetch origin main
           if git ls-remote --exit-code --heads origin data-staging >/dev/null 2>&1; then
@@ -34,22 +42,61 @@ jobs:
           else
             git checkout -B data-staging origin/main
           fi
+          git checkout origin/main -- scripts/record_orbit_refresh.py
+
       - name: Validate orbit distribution code
+        id: self_test
         run: python scripts/build_orbit_distribution.py --check
-      - name: Refresh orbit distribution
+
+      - name: Refresh CelesTrak ACTIVE orbit distribution
+        id: orbit_refresh
+        continue-on-error: true
         run: python scripts/build_orbit_distribution.py
+
+      - name: Record ACTIVE feed retrieval outcome
+        id: record_active
+        if: always() && steps.prepare.outcome == 'success'
+        env:
+          ORBIT_OUTCOME: \${{ steps.orbit_refresh.outcome }}
+        run: python scripts/record_orbit_refresh.py "$ORBIT_OUTCOME"
+
       - name: Compile refresh scripts
-        run: python -m py_compile scripts/build_orbit_distribution.py scripts/refresh_public_feeds.py
-      - name: Refresh CelesTrak and OrbitalWiki snapshots
+        id: compile_scripts
+        run: python -m py_compile scripts/build_orbit_distribution.py scripts/refresh_public_feeds.py scripts/record_orbit_refresh.py scripts/validate_publication.py
+
+      - name: Refresh CelesTrak STATIONS and OrbitalWiki snapshots
+        id: public_feeds
+        continue-on-error: true
         run: python scripts/refresh_public_feeds.py
-      - name: Commit staging data only when changed
+
+      - name: Commit staged data and retrieval log, including failure records
+        id: commit_staging
+        if: always() && steps.prepare.outcome == 'success'
         run: |
           git add data/orbit-distribution/latest.json data/orbital/latest.json data/orbital/orbitalwiki-events/latest.json data/orbital/orbitalwiki-launches/latest.json data/source-log.jsonl
           if git diff --cached --quiet; then
-            echo "No validated data changes to stage."
+            echo "No validated data or retrieval-log changes to stage."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Stage daily orbital data refresh"
           git push origin data-staging
+
+      - name: Fail the run if a refresh, validation or staging commit failed
+        if: always()
+        env:
+          SELF_TEST: \${{ steps.self_test.outcome }}
+          ORBIT_REFRESH: \${{ steps.orbit_refresh.outcome }}
+          RECORD_ACTIVE: \${{ steps.record_active.outcome }}
+          COMPILE_SCRIPTS: \${{ steps.compile_scripts.outcome }}
+          PUBLIC_FEEDS: \${{ steps.public_feeds.outcome }}
+          COMMIT_STAGING: \${{ steps.commit_staging.outcome }}
+        run: |
+          echo "self-test=$SELF_TEST orbit=$ORBIT_REFRESH active-log=$RECORD_ACTIVE compile=$COMPILE_SCRIPTS public-feeds=$PUBLIC_FEEDS staging-commit=$COMMIT_STAGING"
+          for result in "$SELF_TEST" "$ORBIT_REFRESH" "$RECORD_ACTIVE" "$COMPILE_SCRIPTS" "$PUBLIC_FEEDS" "$COMMIT_STAGING"; do
+            if [ "$result" != "success" ]; then
+              echo "Daily refresh did not pass every gate."
+              exit 1
+            fi
+          done
