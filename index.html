@@ -225,7 +225,7 @@ footer{margin:22px 0 0;padding:20px 0 30px;border-top:1px solid var(--line);colo
 <div style="height:15px"></div><div class="quality"><div><b><span class="badge">OBSERVED / CATALOGUED</span></b><span>Beobachtet oder in einem Überwachungskatalog geführt. Stichtag und Quelle nennen.</span></div><div><b><span class="badge amber">MODELLED</span></b><span>Statistische Populationsschätzung. Modell, Größenbereich und Referenzdatum nennen.</span></div><div><b><span class="badge pink">DERIVED</span></b><span>Aus anderen Werten abgeleitet. Formel, Eingaben und Unsicherheit offenlegen.</span></div></div>
 <p class="sub" style="margin:14px 0 0">Qualitätsregeln: keine Interpolation fehlender Monate · Warnung, Risikoprüfung und Manöver getrennt halten · Ereignisse deduplizieren · Quellen- und Aktualisierungsdatum pro Datenpunkt dokumentieren · Unsicherheiten sichtbar kennzeichnen.</p>
 </section>
-<footer><span>SPACE RISK RADAR · Public information prototype · Interactive preview v1.3</span><span>Stand: 03.11.2026 · Unabhängiges Projekt · Keine offizielle ESA- oder DTAG-Veröffentlichung</span></footer>
+<footer><span>SPACE RISK RADAR · Public information prototype · Interactive preview v1.3</span><span>Stand: <span id="site-data-as-of">Datenstand wird geladen …</span> · Unabhängiges Projekt · Keine offizielle ESA- oder DTAG-Veröffentlichung</span></footer>
 </div>
 <dialog id="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title">Detail</h2><button class="dialog-close" type="button" id="dialog-close" aria-label="Detailansicht schließen">Schließen ✕</button></div><div class="dialog-body" id="dialog-body"></div></dialog>
 <script>
@@ -470,6 +470,8 @@ async function loadOrbitDistribution(){
   const response=await fetch("data/orbit-distribution/latest.json?ts="+Date.now(),{cache:"no-store"});
   if(!response.ok)throw new Error("Datensatz noch nicht veröffentlicht (HTTP "+response.status+")");
   const d=await response.json();
+  const footerStamp=document.getElementById("site-data-as-of");
+  if(footerStamp)footerStamp.textContent=new Date(d.retrieved_at_utc).toLocaleDateString("de-DE",{timeZone:"UTC"});
   const required=["record_count","classified_count","counts","retrieved_at_utc","source_url"];
   if(required.some(k=>!(k in d))||!d.counts||typeof d.record_count!=="number")throw new Error("Datensatzschema unvollständig");
   const keys=[["leo","LEO · niedrige Erdumlaufbahn"],["meo","MEO · mittlere Erdumlaufbahn"],["geo_like","GEO-ähnlich"],["heo_or_crossing","HEO / kreuzende Bahnen"],["above_geo","Oberhalb GEO"],["unclassified","Nicht klassifiziert"]];
@@ -497,6 +499,7 @@ async function loadOrbitDistribution(){
   if(!d.quality){status.textContent="Geladen · Qualitätsmetadaten fehlen";status.className="badge amber";}
   const topStatus=document.getElementById("orbit-data-status-top");if(topStatus){topStatus.textContent=status.textContent;topStatus.className=status.className;}
  }catch(error){
+  const footerStamp=document.getElementById("site-data-as-of");if(footerStamp)footerStamp.textContent="nicht verfügbar";
   status.textContent="Noch nicht verfügbar";status.className="badge amber";
   const p=document.createElement("p");p.className="evidence-sub";p.textContent=String(error.message||error)+"; es werden keine Zahlen geschätzt oder ersatzweise angezeigt.";bars.replaceChildren(p);
  }
