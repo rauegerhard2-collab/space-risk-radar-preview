@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-16",
-  "retrieved_at": "2026-11-16T10:44:10+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-17",
+  "retrieved_at": "2026-11-17T07:35:32+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,19 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-16T10:44:10.905Z",
+    "generated_at": "2026-11-17T07:35:33.389Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "5f982a3c-0242-482a-a7c3-fe4770877753",
+        "type": "object_added",
+        "noradId": "101400",
+        "title": "New object catalogued: 2026-257N",
+        "detail": "First appeared in the catalog as 2026-257N.",
+        "detectedAt": "2026-11-17T01:20:50.810894+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101400"
+      },
       {
         "id": "14988c59-ca62-4b6d-8f6d-5e56b8d08cad",
         "type": "orbit_changed",
@@ -903,22 +912,13 @@
         "detail": "Orbit and period moved from HEO / 922.9 min to HEO / 1030.1 min.",
         "detectedAt": "2026-11-03T22:43:57.231334+00:00",
         "url": "https://www.orbitalwiki.com/satellites/100125"
-      },
-      {
-        "id": "cb157630-845a-45db-996e-77193856fe16",
-        "type": "orbit_changed",
-        "noradId": "101228",
-        "title": "Orbit changed: NORAD 101228",
-        "detail": "Orbit and period moved from HEO / 672.0 min to MEO / 1206.2 min.",
-        "detectedAt": "2026-11-03T13:20:13.158812+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101228"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-16T03:58:39.672192+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-16T03%3A58%3A39.672192%2B00%3A00",
+      "latest_detected_at": "2026-11-17T01:20:50.810894+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-17T01%3A20%3A50.810894%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
