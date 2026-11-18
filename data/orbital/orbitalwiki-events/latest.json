@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-17",
-  "retrieved_at": "2026-11-17T07:35:32+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-18",
+  "retrieved_at": "2026-11-18T07:32:50+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,37 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-17T07:35:33.389Z",
+    "generated_at": "2026-11-18T07:32:52.314Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "62899063-c6a9-46bb-bb4e-71d3f655a871",
+        "type": "object_added",
+        "noradId": "101331",
+        "title": "New object catalogued: TANLUOZHE-1 OBJECT B",
+        "detail": "First appeared in the catalog as TANLUOZHE-1 OBJECT B.",
+        "detectedAt": "2026-11-18T00:16:44.085513+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101331"
+      },
+      {
+        "id": "c1205a70-913e-44d2-b9ef-2b4f58e35982",
+        "type": "object_added",
+        "noradId": "101332",
+        "title": "New object catalogued: TANLUOZHE-1 OBJECT C",
+        "detail": "First appeared in the catalog as TANLUOZHE-1 OBJECT C.",
+        "detectedAt": "2026-11-18T00:16:44.085513+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101332"
+      },
+      {
+        "id": "f35ce82e-e9f1-46f0-86f2-1671ba59c7de",
+        "type": "orbit_changed",
+        "noradId": "100884",
+        "title": "Orbit changed: NORAD 100884",
+        "detail": "Orbit and period moved from SSO / 94.9 min to SSO / 96.9 min.",
+        "detectedAt": "2026-11-17T15:15:23.394746+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100884"
+      },
       {
         "id": "5f982a3c-0242-482a-a7c3-fe4770877753",
         "type": "object_added",
@@ -885,40 +912,13 @@
         "detail": "First appeared in the catalog as STARLINK-38155.",
         "detectedAt": "2026-11-04T13:31:57.989479+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101255"
-      },
-      {
-        "id": "5d6cf439-90f9-42ef-95e7-edb29f4bb5a0",
-        "type": "object_added",
-        "noradId": "101256",
-        "title": "New object catalogued: STARLINK-38457",
-        "detail": "First appeared in the catalog as STARLINK-38457.",
-        "detectedAt": "2026-11-04T13:31:57.989479+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101256"
-      },
-      {
-        "id": "00ecbebe-d3c5-42d0-b4bf-01bdb13651fb",
-        "type": "object_added",
-        "noradId": "101257",
-        "title": "New object catalogued: QPS-SAR-20 (WADATSUMI-II)",
-        "detail": "First appeared in the catalog as QPS-SAR-20 (WADATSUMI-II).",
-        "detectedAt": "2026-11-04T13:31:57.989479+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101257"
-      },
-      {
-        "id": "6c39be9c-f1f6-4bee-b498-b21bd0b9fbaf",
-        "type": "orbit_changed",
-        "noradId": "100125",
-        "title": "Orbit changed: NORAD 100125",
-        "detail": "Orbit and period moved from HEO / 922.9 min to HEO / 1030.1 min.",
-        "detectedAt": "2026-11-03T22:43:57.231334+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/100125"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-17T01:20:50.810894+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-17T01%3A20%3A50.810894%2B00%3A00",
+      "latest_detected_at": "2026-11-18T00:16:44.085513+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-18T00%3A16%3A44.085513%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
