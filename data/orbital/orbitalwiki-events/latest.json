@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-22",
-  "retrieved_at": "2026-11-22T07:27:08+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-23",
+  "retrieved_at": "2026-11-23T07:52:37+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,19 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-22T07:27:08.663Z",
+    "generated_at": "2026-11-23T07:52:38.441Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "3a373ddc-8539-4b7d-bbe9-325a3d26a707",
+        "type": "object_added",
+        "noradId": "101417",
+        "title": "New object catalogued: GUOWANG-30 OBJECT B",
+        "detail": "First appeared in the catalog as GUOWANG-30 OBJECT B.",
+        "detectedAt": "2026-11-22T23:01:01.296145+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101417"
+      },
       {
         "id": "dc94143a-c0b2-4938-864d-46b4076c8a3f",
         "type": "object_added",
@@ -903,22 +912,13 @@
         "detail": "First appeared in the catalog as FLOCK 4J-13.",
         "detectedAt": "2026-11-08T03:34:01.915701+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101288"
-      },
-      {
-        "id": "c7c0fac7-76fc-40a0-96f6-330c0190cb17",
-        "type": "object_added",
-        "noradId": "101289",
-        "title": "New object catalogued: FLOCK 4J-15",
-        "detail": "First appeared in the catalog as FLOCK 4J-15.",
-        "detectedAt": "2026-11-08T03:34:01.915701+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101289"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-21T22:38:21.39837+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-21T22%3A38%3A21.39837%2B00%3A00",
+      "latest_detected_at": "2026-11-22T23:01:01.296145+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-22T23%3A01%3A01.296145%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
