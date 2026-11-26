@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-25",
-  "retrieved_at": "2026-11-25T07:40:58+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-26",
+  "retrieved_at": "2026-11-26T07:39:53+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,46 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-25T07:40:59.070Z",
+    "generated_at": "2026-11-26T07:39:53.965Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "542c9952-c18b-493d-ad31-2ceb09f026db",
+        "type": "orbit_changed",
+        "noradId": "100686",
+        "title": "Orbit changed: NORAD 100686",
+        "detail": "Orbit and period moved from MEO / 198.1 min to MEO / 202.1 min.",
+        "detectedAt": "2026-11-26T01:21:56.559432+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100686"
+      },
+      {
+        "id": "3d58d5f5-eb29-4d7a-9d43-609479953cd2",
+        "type": "orbit_changed",
+        "noradId": "100687",
+        "title": "Orbit changed: NORAD 100687",
+        "detail": "Orbit and period moved from MEO / 197.0 min to MEO / 203.0 min.",
+        "detectedAt": "2026-11-26T01:21:56.559432+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/100687"
+      },
+      {
+        "id": "cc3519d9-66a7-4b20-83a6-bb5c0bc51e4d",
+        "type": "object_added",
+        "noradId": "101457",
+        "title": "New object catalogued: PROGRESS-MS 36",
+        "detail": "First appeared in the catalog as PROGRESS-MS 36.",
+        "detectedAt": "2026-11-26T01:21:56.559432+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101457"
+      },
+      {
+        "id": "192c4be5-e57c-44f1-8f2b-db91dcdbfd9f",
+        "type": "object_added",
+        "noradId": "101512",
+        "title": "New object catalogued: SHENZHOU-24 (SZ-24)",
+        "detail": "First appeared in the catalog as SHENZHOU-24 (SZ-24).",
+        "detectedAt": "2026-11-26T01:21:56.559432+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101512"
+      },
       {
         "id": "96c6c238-08ea-49ff-ab3a-6054d76b32d2",
         "type": "orbit_changed",
@@ -876,49 +912,13 @@
         "detail": "First appeared in the catalog as QIANFAN 17 OBJECT P.",
         "detectedAt": "2026-11-08T03:34:01.915701+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101277"
-      },
-      {
-        "id": "5b8f8220-a8e8-4317-965c-3fe95148cccf",
-        "type": "object_added",
-        "noradId": "101278",
-        "title": "New object catalogued: QIANFAN 17 OBJECT Q",
-        "detail": "First appeared in the catalog as QIANFAN 17 OBJECT Q.",
-        "detectedAt": "2026-11-08T03:34:01.915701+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101278"
-      },
-      {
-        "id": "ae3fb0f1-b8de-40d0-b594-e6b6bf4fbe2c",
-        "type": "object_added",
-        "noradId": "101279",
-        "title": "New object catalogued: QIANFAN 17 OBJECT R",
-        "detail": "First appeared in the catalog as QIANFAN 17 OBJECT R.",
-        "detectedAt": "2026-11-08T03:34:01.915701+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101279"
-      },
-      {
-        "id": "8a3124b9-8af4-4c5f-8303-10c89967e9e9",
-        "type": "object_added",
-        "noradId": "101280",
-        "title": "New object catalogued: QIANFAN 17 OBJECT S",
-        "detail": "First appeared in the catalog as QIANFAN 17 OBJECT S.",
-        "detectedAt": "2026-11-08T03:34:01.915701+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101280"
-      },
-      {
-        "id": "cd53ab09-381f-4706-8286-faae1b060a72",
-        "type": "object_added",
-        "noradId": "101281",
-        "title": "New object catalogued: QIANFAN 17 OBJECT T",
-        "detail": "First appeared in the catalog as QIANFAN 17 OBJECT T.",
-        "detectedAt": "2026-11-08T03:34:01.915701+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101281"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-24T16:45:43.251078+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-24T16%3A45%3A43.251078%2B00%3A00",
+      "latest_detected_at": "2026-11-26T01:21:56.559432+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-26T01%3A21%3A56.559432%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
