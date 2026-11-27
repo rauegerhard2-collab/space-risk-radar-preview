@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-launches-2026-11-26",
-  "retrieved_at": "2026-11-26T07:39:54+00:00",
+  "dataset_id": "orbitalwiki-launches-2026-11-27",
+  "retrieved_at": "2026-11-27T07:38:27+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/launches",
@@ -9,8 +9,8 @@
   "record_type": "launch catalogue metadata; not orbital ephemerides",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-26T07:39:54.794Z",
-    "count": 2016,
+    "generated_at": "2026-11-27T07:38:27.686Z",
+    "count": 2017,
     "newest_launch_date": "2026-11-25",
     "note": "Launches derived from the COSPAR international designator prefix shared by their objects. Vehicle and launch site are not carried, because this catalog does not hold them.",
     "data": [
@@ -19,6 +19,12 @@
         "object_count": 1,
         "earliest_launch_date": "2026-11-25",
         "url": "https://www.orbitalwiki.com/launches/2026-266"
+      },
+      {
+        "launch_id": "2026-264",
+        "object_count": 36,
+        "earliest_launch_date": "2026-11-24",
+        "url": "https://www.orbitalwiki.com/launches/2026-264"
       },
       {
         "launch_id": "2026-263",
