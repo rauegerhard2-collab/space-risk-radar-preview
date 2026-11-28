@@ -1,6 +1,6 @@
 {
-  "dataset_id": "orbitalwiki-events-2026-11-27",
-  "retrieved_at": "2026-11-27T07:38:25+00:00",
+  "dataset_id": "orbitalwiki-events-2026-11-28",
+  "retrieved_at": "2026-11-28T07:30:44+00:00",
   "source": {
     "name": "OrbitalWiki public read-only API",
     "url": "https://www.orbitalwiki.com/api/v1/events",
@@ -9,10 +9,37 @@
   "record_type": "catalogue change events; not conjunction warnings or manoeuvre records",
   "payload": {
     "object": "list",
-    "generated_at": "2026-11-27T07:38:26.988Z",
+    "generated_at": "2026-11-28T07:30:46.480Z",
     "count": 100,
     "note": "New catalogued objects, recorded reentries and significant orbit changes. Published within a day of the catalog updating, never in real time. Poll with ?since=<ISO 8601 timestamp>, exclusive, and ?limit=1-500; meta.latest_detected_at is the cursor to send back. History is not paginated: only the newest entries in the change log are reachable, so a consumer that stops polling cannot recover the gap.",
     "data": [
+      {
+        "id": "1e51f59c-b296-4f43-835e-270bd2f03dad",
+        "type": "object_added",
+        "noradId": "101514",
+        "title": "New object catalogued: YAOGAN-49 01 OBJECT A",
+        "detail": "First appeared in the catalog as YAOGAN-49 01 OBJECT A.",
+        "detectedAt": "2026-11-27T15:53:38.620464+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101514"
+      },
+      {
+        "id": "6b8106a4-73fc-4594-8666-804fbffe9944",
+        "type": "object_added",
+        "noradId": "101515",
+        "title": "New object catalogued: YAOGAN-49 01 OBJECT B",
+        "detail": "First appeared in the catalog as YAOGAN-49 01 OBJECT B.",
+        "detectedAt": "2026-11-27T15:53:38.620464+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101515"
+      },
+      {
+        "id": "030e0ef1-bfb6-4db9-9d0c-11d744e87260",
+        "type": "object_added",
+        "noradId": "101516",
+        "title": "New object catalogued: YAOGAN-49 01 OBJECT C",
+        "detail": "First appeared in the catalog as YAOGAN-49 01 OBJECT C.",
+        "detectedAt": "2026-11-27T15:53:38.620464+00:00",
+        "url": "https://www.orbitalwiki.com/satellites/101516"
+      },
       {
         "id": "efd204c7-8524-466e-baea-7e9a12122658",
         "type": "orbit_changed",
@@ -885,40 +912,13 @@
         "detail": "First appeared in the catalog as 2026-257H.",
         "detectedAt": "2026-11-15T13:13:48.966296+00:00",
         "url": "https://www.orbitalwiki.com/satellites/101395"
-      },
-      {
-        "id": "3feee959-134b-4e1e-9f08-4cdd76792b28",
-        "type": "object_added",
-        "noradId": "101396",
-        "title": "New object catalogued: 2026-257J",
-        "detail": "First appeared in the catalog as 2026-257J.",
-        "detectedAt": "2026-11-15T13:13:48.966296+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101396"
-      },
-      {
-        "id": "d04820ed-b034-4751-bd9a-4b78700e0671",
-        "type": "object_added",
-        "noradId": "101397",
-        "title": "New object catalogued: 2026-257K",
-        "detail": "First appeared in the catalog as 2026-257K.",
-        "detectedAt": "2026-11-15T13:13:48.966296+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101397"
-      },
-      {
-        "id": "f928045b-ce00-49d8-9a9a-9563d291cd9e",
-        "type": "object_added",
-        "noradId": "101398",
-        "title": "New object catalogued: 2026-257L",
-        "detail": "First appeared in the catalog as 2026-257L.",
-        "detectedAt": "2026-11-15T13:13:48.966296+00:00",
-        "url": "https://www.orbitalwiki.com/satellites/101398"
       }
     ],
     "meta": {
       "limit": 100,
       "since": null,
-      "latest_detected_at": "2026-11-27T01:20:26.730987+00:00",
-      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-27T01%3A20%3A26.730987%2B00%3A00",
+      "latest_detected_at": "2026-11-27T15:53:38.620464+00:00",
+      "next": "https://www.orbitalwiki.com/api/v1/events?since=2026-11-27T15%3A53%3A38.620464%2B00%3A00",
       "sources": [
         "celestrak-omm"
       ],
